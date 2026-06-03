@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "production-ai-systems"
+version = "0.1.0"
+description = "Advanced roadmap for building production-grade AI systems"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Rogerio Silva" }
+]
+dependencies = [
+    "openai",
+    "litellm",
+    "pydantic>=2.0.0",
+    "instructor",
+    "python-dotenv",
+    "fastapi",
+    "uvicorn",
+    "langchain",
+    "langgraph",
+    "llama-index",
+    "qdrant-client",
+    "chromadb",
+    "numpy",
+    "pandas",
+    "tqdm",
+    "loguru",
+    "tiktoken",
+    "transformers",
+    "scikit-learn",
+    "matplotlib",
+    "mkdocs-material>=9.5.0",
+    "mkdocs-mermaid2-plugin>=0.6.4",
+    "mkdocstrings[python]>=0.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "ruff",
+    "pre-commit",
+    "detect-secrets",
+    "ipykernel",
+    "httpx",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "mkdocs-mermaid2-plugin",
+]
+
+[tool.setuptools]
+package-dir = {"" = "source"}
+
+[tool.setuptools.packages.find]
+where = ["source"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "B", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "--cov=source --cov-report=term-missing"

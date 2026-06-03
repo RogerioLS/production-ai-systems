@@ -110,55 +110,50 @@ Multimodal AI
 
 ### 🎯 Objective
 
-Deep understanding of:
-
-* model internals
-* inference
-* embeddings
-* tokenization
-* context management
-* latency and cost
-* hallucinations
-* quantization
+Deep understanding of the transition from mathematical operations to emergent AI phenomena and production-grade inference.
 
 ---
 
 ### 📚 Concepts
 
-* [ ] Transformers
-* [ ] Attention Mechanism
-* [ ] Self-Attention
-* [ ] Positional Encoding
-* [ ] Tokens
-* [ ] Embeddings
-* [ ] Context Window
-* [ ] Quantization
-* [ ] Inference
-* [ ] KV Cache
-* [ ] Sampling
-* [ ] Temperature
-* [ ] Top-p
-* [ ] Hallucinations
-* [ ] Fine-Tuning vs RAG
+* [ ] **The Objective Function**: Cross-Entropy Loss and Next Token Prediction math.
+* [ ] **Information Theory**: Kolmogorov Complexity and LLMs as optimal compressors.
+* [ ] **The Transformer Math**:
+    * [ ] Linear Algebra of Self-Attention (Q, K, V matrices).
+    * [ ] Softmax as a probability distribution over the vocabulary.
+    * [ ] Positional Encodings (Sine/Cosine vs RoPE).
+    * [ ] KV Cache and Memory Management.
+* [ ] **Tokens & Embeddings**:
+    * [ ] Tokenization algorithms (BPE, WordPiece).
+    * [ ] Embedding Geometry & The Manifold Hypothesis in high-dimensional spaces.
+* [ ] **Inference & Sampling**:
+    * [ ] Sampling Math: Temperature, Top-p, Top-k, Beam Search.
+    * [ ] Quantization (INT8/FP16/GGUF) and Latency/Cost trade-offs.
+    * [ ] Context Window management and Attention Scaling.
+* [ ] **Emergence & Scaling Laws**:
+    * [ ] Chinchilla Optimality and Scaling Laws.
+    * [ ] Mechanistic Interpretability (Induction heads and circuit analysis).
+* [ ] **System Reliability**: Hallucinations, Grounding, and Fine-Tuning vs RAG concepts.
 
 ---
 
 ### 🛠️ Tools
 
-* [ ] OpenAI SDK
-* [ ] Ollama
-* [ ] OpenRouter
-* [ ] LiteLLM
-* [ ] vLLM
+* [ ] **Engines**: PyTorch, TransformerLens.
+* [ ] **Tokenizers**: Tiktoken, HuggingFace Tokenizers.
+* [ ] **Local Inference**: Ollama, vLLM, LiteLLM.
+* [ ] **SDKs**: OpenAI SDK, OpenRouter.
 
 ---
 
 ### 🧪 Projects
 
-* [ ] Multi-model chatbot
-* [ ] LLM benchmark system
-* [ ] Fallback provider architecture
-* [ ] Cost and latency comparison
+* [ ] **Attention from Scratch**: Build a minimal GPT-like attention block in pure PyTorch.
+* [ ] **Tokenization Efficiency Lab**: Math of BPE vs WordPiece and cost/context impact.
+* [ ] **Embedding Geometry Lab**: Visualize semantic relationships (King - Man + Woman = Queen) in high-dimensional spaces.
+* [ ] **Loss Landscape Analysis**: Study how Sampling (Temperature) affects the probability distribution.
+* [ ] **Multi-model Benchmark System**: Compare cost, latency, and performance across different providers.
+* [ ] **Fallback Architecture**: Design a robust multi-provider chatbot with automated failover.
 
 ---
 

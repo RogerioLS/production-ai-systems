@@ -1,5 +1,5 @@
 ---
-name: issue-writer
+name: issue_writer
 description: Creates detailed GitHub issues from roadmap items, project plans, and learning tasks. Produces implementation-ready tasks with acceptance criteria.
 ---
 

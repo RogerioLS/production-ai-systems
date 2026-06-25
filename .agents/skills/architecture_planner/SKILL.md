@@ -1,5 +1,5 @@
 ---
-name: architecture-planner
+name: architecture_planner
 description: Senior AI systems architect for production-grade LLM, RAG, Agent, MCP, OCR, and LLMOps projects.
 ---
 

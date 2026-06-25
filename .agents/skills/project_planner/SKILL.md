@@ -1,5 +1,5 @@
 ---
-name: project-planner
+name: project_planner
 description: Technical project manager for the production-ai-systems roadmap. Breaks large roadmap areas into practical projects, milestones, sprints, and learning tasks.
 ---
 

@@ -7,11 +7,10 @@ install:
 check:
 	black .
 	isort .
-	ruff . --fix
-	detect-secrets scan > .secrets.baseline
+	ruff check . --fix
 
 test:
-	pytest tests/
+	PYTHONPATH=. pytest tests/ projects/
 
 docs-serve:
 	mkdocs serve -a 127.0.0.1:8009

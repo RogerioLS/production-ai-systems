@@ -36,6 +36,9 @@ plugins:
           paths: ["source", "."]
           options:
             show_source: true
+  - mkdocs-jupyter:
+      execute: true
+
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -64,6 +67,8 @@ nav:
   - Roadmap: roadmap.md
   - Foundations:
     - Overview: notes/01_foundations.md
+    - Tokenization Playground: notebooks/a_llm_basics/tokenization_playground.ipynb
+    - Embedding Geometry Playground: notebooks/a_llm_basics/embeddings_playground.ipynb
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:

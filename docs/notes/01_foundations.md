@@ -8,13 +8,19 @@ Deep understanding of model internals, inference, tokenization math, embedding g
 Tokenization is a fundamental data compression task. Given a corpus, we learn a vocabulary $V$ that maps variable-length sequences of characters to integer IDs. The compression efficiency is defined by:
 $\text{Compression Ratio} = \frac{\text{Bytes of UTF-8 Text}}{\text{Tokens Generated}}$
 
-- **BPE (Byte Pair Encoding):** Merges the most frequent adjacent byte/token pairs iteratively. Used in GPT-4 (`cl100k_base`), GPT-4o (`o200k_base`), Llama, and Claude.
+- **[BPE (Byte Pair Encoding)](#ref-bpe):** Merges the most frequent adjacent byte/token pairs iteratively. Used in GPT-4 (`cl100k_base`), GPT-4o (`o200k_base`), Llama, and Claude.
 - **WordPiece:** Merges the pair that maximizes the likelihood of the corpus under a unigram model, maximizing the mutual information:
   $\text{Score}(A, B) = \frac{\text{count}(A, B)}{\text{count}(A) \times \text{count}(B)}$
+
+For a detailed walkthrough of subword tokenization algorithms, refer to the [Hugging Face Tokenizers Guide](#ref-huggingface).
 
 ---
 
 ## 📊 LAB-01: Tokenization Benchmark Results
+
+!!! tip "Interactive Playground"
+    You can run and experiment with BPE vs WordPiece algorithms, test custom texts, and check token splits interactively inside the [**tokenization_playground.ipynb**](../notebooks/a_llm_basics/tokenization_playground.ipynb) notebook.
+
 
 We compared the tokenizers across various domains. Here is the empirical evaluation:
 
@@ -55,16 +61,72 @@ We compared the tokenizers across various domains. Here is the empirical evaluat
 3. **Digit Splitting in Finance:**
    Numeric data is tokenized at a very low compression ratio (~1.7 B/T). Tokenizers split numbers into individual or pairs of digits to allow the model to generalize math operations better, but this increases the token footprint of financial tabular data.
 
+4. **Local Fallback Strategy:**
+   For local development or API-free testing, local model routing and orchestration can be implemented using [Ollama & LiteLLM](#ref-litellm).
+
 ---
 
-## 💻 API & Code Reference
+## 📐 LAB-02: Embedding Geometry & Manifold Hypothesis
 
-Below is the technical documentation automatically generated from the docstrings of our LAB-01 implementation:
+!!! tip "Interactive Playground"
+    You can run and experiment with these mathematical calculations, queries, and visualizations interactively inside the
+    [**embeddings_playground.ipynb**](../notebooks/a_llm_basics/embeddings_playground.ipynb) notebook.
 
-::: projects.a_llm_basics.src.tokenizer_math
-    options:
-      handler: python
-      show_source: true
+### 1. Geometric Pipeline
+The flowchart below illustrates how raw semantic strings are mapped to vector spaces and subsequently projected to 2D for human analysis, preserving either local or global topological features:
+
+```mermaid
+flowchart TD
+    Raw[Raw Words/Tokens] -->|BaseEmbedder| HighDim[High-Dimensional Unit Hypersphere R^100]
+    HighDim -->|Manifold Topology| Clusters[Category Clustering: Food, Tech, Sports, Animals]
+    Clusters -->|Linear Projection| PCA[PCA: Preserves Global Variance & Geometry]
+    Clusters -->|Non-Linear Probabilistic| TSNE[t-SNE: Preserves Local Neighborhoods]
+    PCA -->|Scatter Map| VizPCA[2D PCA Visualization]
+    TSNE -->|Neighbor Mapping| VizTSNE[2D t-SNE Visualization]
+```
+
+#### Convergence Animation (t-SNE Morphogenesis)
+Below is the animated visualization showing how high-dimensional word vectors converge onto a 2D plane using t-SNE. Points start in random high-entropy coordinates and migrate smoothly toward their respective semantic clusters:
+
+![t-SNE Convergence Animation](../assets/a_llm_basics/embedding_manifold.gif)
+
+#### 3D Space Rotation Animation (PCA 3D Representation)
+Below is the 3D projection of the 100-dimensional word embeddings via PCA. The 360-degree rotation highlights the volumetric separation of the semantic clusters (Food, Tech, Sports, Animals) in the latent metric space:
+
+![3D PCA Manifold Rotation](../assets/a_llm_basics/embedding_rotation_3d.gif)
+
+### 2. The Manifold Hypothesis
+The [Manifold Hypothesis](#ref-manifold) states that real-world high-dimensional data (like text embeddings in a 768 or 1536-dimensional space) lies on lower-dimensional, non-linear manifolds embedded within the high-dimensional space. By mapping discrete words or tokens into dense continuous vectors, LLMs learn smooth manifolds where:
+- **Semantic proximity** translates to spatial proximity.
+- **Concepts** cluster organically (e.g., technology, sports, animals, food).
+- **Directions** capture relationships (e.g., the classic vector analogy: $\vec{v}_{\text{King}} - \vec{v}_{\text{Man}} + \vec{v}_{\text{Woman}} \approx \vec{v}_{\text{Queen}}$).
+
+### 3. Dimensionality Reduction: PCA vs. t-SNE
+To visualize and analyze these manifolds, we project them to 2D using:
+- **[PCA (Principal Component Analysis)](#ref-pca):** A linear projection that maximizes variance along orthogonal axes. It preserves **global geometry** and large distances but can squash local cluster relationships.
+- **[t-SNE (t-Distributed Stochastic Neighbor Embedding)](#ref-tsne):** A non-linear, probabilistic technique that minimizes the divergence between pairwise similarities in high-dimensional and low-dimensional spaces. It excels at preserving **local neighborhoods** and clusters, though the absolute scale and global relative positioning of clusters are not preserved.
+
+### 4. Metric Spaces: Cosine Similarity vs. Euclidean Distance
+In high-dimensional embedding spaces, we measure proximity using **[Cosine Similarity](#ref-cosine-similarity)**:
+$$\text{Cosine Similarity}(u, v) = \cos(\theta) = \frac{u \cdot v}{\|u\|_2 \|v\|_2} = \frac{\sum_{i=1}^d u_i v_i}{\sqrt{\sum_{i=1}^d u_i^2} \sqrt{\sum_{i=1}^d v_i^2}}$$
+
+- **Why Cosine Similarity?** Modern embeddings generally normalize vectors to unit length ($\|u\|_2 = 1$). Under unit normalization, Cosine Similarity is equivalent to a simple dot product, and directly maps to Euclidean distance:
+  $$\|u - v\|_2^2 = \|u\|_2^2 + \|v\|_2^2 - 2(u \cdot v) = 2 - 2\cos(\theta)$$
+- **Curse of Dimensionality:** In very high dimensions, Euclidean distance becomes less discriminative because the distance between almost all pairs of points converges to the same value. Cosine similarity focuses purely on the **angular difference** (direction) rather than magnitude, which captures semantic alignment more effectively.
+
+---
+
+## 🎮 Code Demonstration & Interactive Playgrounds
+
+To explore, run, and experiment with the implementations of these algorithms in detail, we have consolidated all code documentation and execution patterns inside interactive Jupyter Notebooks.
+
+Rather than reading dry static code documentation, you can run benchmarks, compute similarities, and manipulate 2D/3D charts directly:
+
+👉 **[Launch Tokenization Benchmark Playground](../notebooks/a_llm_basics/tokenization_playground.ipynb)**
+
+👉 **[Launch Embedding Geometry Playground](../notebooks/a_llm_basics/embeddings_playground.ipynb)**
+
+*These playgrounds include imports and examples for BPE/WordPiece tokenizers, the custom category cluster embedder, manual cosine similarity, and dimensionality reduction projections.*
 
 ---
 
@@ -217,10 +279,12 @@ Below are the academic references and technical guides used in this module, stru
 }
 </style>
 
+### 📄 Academic & Seminal Papers
+
 <div class="blog-override-posts">
 
   <!-- Attention Is All You Need -->
-  <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="blog-override-post">
+  <a id="ref-attention" href="https://arxiv.org/abs/1706.03762" target="_blank" class="blog-override-post">
     <h3 class="blog-post-title">Attention Is All You Need</h3>
     <div class="blog-post-extra">
       <b>Vaswani et al. · </b>
@@ -236,7 +300,7 @@ Below are the academic references and technical guides used in this module, stru
   </a>
 
   <!-- BPE Paper -->
-  <a href="https://arxiv.org/abs/1508.07909" target="_blank" class="blog-override-post">
+  <a id="ref-bpe" href="https://arxiv.org/abs/1508.07909" target="_blank" class="blog-override-post">
     <h3 class="blog-post-title">Neural Machine Translation of Rare Words with Subword Units</h3>
     <div class="blog-post-extra">
       <b>Sennrich et al. · </b>
@@ -251,8 +315,30 @@ Below are the academic references and technical guides used in this module, stru
     <p class="blog-post-description">The original paper adapting Byte Pair Encoding (BPE) for word segmentation in machine translation, solving the out-of-vocabulary words problem.</p>
   </a>
 
+  <!-- t-SNE Reference -->
+  <a id="ref-tsne" href="https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">Visualizing Data using t-SNE</h3>
+    <div class="blog-post-extra">
+      <b>Laurens van der Maaten, Geoffrey Hinton · </b>
+      <span>2008-11-01</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#probabilistic-modeling</code>
+      <code>#dimensionality-reduction</code>
+      <code>#t-sne</code>
+      <code>#paper</code>
+    </div>
+    <p class="blog-post-description">The landmark paper introducing t-Distributed Stochastic Neighbor Embedding, showcasing its ability to preserve local neighborhood topologies compared to linear methods.</p>
+  </a>
+
+</div>
+
+### 📖 Technical References & Guides
+
+<div class="blog-override-posts">
+
   <!-- Hugging Face Guide -->
-  <a href="https://huggingface.co/docs/tokenizers/index" target="_blank" class="blog-override-post">
+  <a id="ref-huggingface" href="https://huggingface.co/docs/tokenizers/index" target="_blank" class="blog-override-post">
     <h3 class="blog-post-title">Hugging Face Tokenizers Guide</h3>
     <div class="blog-post-extra">
       <b>Hugging Face Team · </b>
@@ -267,7 +353,7 @@ Below are the academic references and technical guides used in this module, stru
   </a>
 
   <!-- Ollama & LiteLLM Integration Docs -->
-  <a href="https://litellm.ai" target="_blank" class="blog-override-post">
+  <a id="ref-litellm" href="https://litellm.ai" target="_blank" class="blog-override-post">
     <h3 class="blog-post-title">Ollama & LiteLLM Integration Docs</h3>
     <div class="blog-post-extra">
       <b>LiteLLM Team · </b>
@@ -279,6 +365,54 @@ Below are the academic references and technical guides used in this module, stru
       <code>#tooling</code>
     </div>
     <p class="blog-post-description">Guide on running local LLM inference engines and wrapping them with OpenAI-compatible routing for development fallbacks.</p>
+  </a>
+
+  <!-- Manifold Hypothesis Reference -->
+  <a id="ref-manifold" href="https://en.wikipedia.org/wiki/Manifold_hypothesis" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">The Manifold Hypothesis (Wikipedia)</h3>
+    <div class="blog-post-extra">
+      <b>Wikipedia & Community · </b>
+      <span>Mathematical Concept</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#math</code>
+      <code>#topology</code>
+      <code>#manifold-hypothesis</code>
+      <code>#reference</code>
+    </div>
+    <p class="blog-post-description">Deep dive into why high-dimensional data distributions tend to concentrate near lower-dimensional, non-linear manifolds, which forms the mathematical foundation of neural embeddings.</p>
+  </a>
+
+  <!-- PCA Reference -->
+  <a id="ref-pca" href="https://en.wikipedia.org/wiki/Principal_component_analysis" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">Principal Component Analysis (PCA)</h3>
+    <div class="blog-post-extra">
+      <b>Karl Pearson · </b>
+      <span>1901-07-01</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#linear-algebra</code>
+      <code>#dimensionality-reduction</code>
+      <code>#pca</code>
+      <code>#reference</code>
+    </div>
+    <p class="blog-post-description">Historical paper and mathematical proof detailing the process of projecting high-dimensional points onto orthogonal eigenvectors to maximize variance.</p>
+  </a>
+
+  <!-- Cosine Similarity Reference -->
+  <a id="ref-cosine-similarity" href="https://en.wikipedia.org/wiki/Cosine_similarity" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">Cosine Similarity & Vector Spaces</h3>
+    <div class="blog-post-extra">
+      <b>Wikipedia & Community · </b>
+      <span>Linear Algebra Metric</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#linear-algebra</code>
+      <code>#metric-space</code>
+      <code>#cosine-similarity</code>
+      <code>#reference</code>
+    </div>
+    <p class="blog-post-description">Overview of cosine similarity, its mathematical formulation, and its application in high-dimensional information retrieval and metric vector spaces.</p>
   </a>
 
 </div>

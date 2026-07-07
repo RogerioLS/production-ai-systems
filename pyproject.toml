@@ -76,6 +76,7 @@ line_length = 100
 line-length = 100
 target-version = "py311"
 select = ["E", "F", "B", "I"]
+exclude = ["*.ipynb", "**/*.ipynb", "**/notebooks/**"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

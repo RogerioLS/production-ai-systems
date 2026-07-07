@@ -55,6 +55,7 @@ docs = [
     "mkdocs-material",
     "mkdocstrings[python]",
     "mkdocs-mermaid2-plugin",
+    "mkdocs-jupyter",
 ]
 
 [tool.setuptools]

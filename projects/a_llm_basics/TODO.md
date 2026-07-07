@@ -6,8 +6,8 @@
 - [x] [LAB-03] Calculate Tokenization Efficiency and Context Window Costs
 
 ## Phase 2: Embeddings
-- [ ] [LAB-04] Visualize Word Embeddings with PCA/TSNE
-- [ ] [LAB-05] Semantic Search Experiment (Cosine Similarity)
+- [x] [LAB-04] Visualize Word Embeddings with PCA/TSNE
+- [x] [LAB-05] Semantic Search Experiment (Cosine Similarity)
 
 ## Phase 3: Attention & Architecture
 - [ ] [LAB-06] Basic Self-Attention Simulation from Scratch

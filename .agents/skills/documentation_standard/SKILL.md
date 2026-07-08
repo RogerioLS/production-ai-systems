@@ -97,6 +97,64 @@ To get the most out of this chapter, we recommend:
 
 ---
 
+## 📁 Directory Structure & Governance
+
+To keep the repository clean and scalable, all documentation files must adhere to the following directory layout:
+
+```text
+docs/
+├── assets/
+│   └── [module_name]/                # Visual media assets (PNGs, GIFs)
+├── includes/
+│   └── templates/
+│       └── [module_name]/            # Reusable markdown snippet templates
+├── javascripts/
+│   ├── mathjax.js                    # MathJax configuration script
+│   └── [script_name].js              # Custom scripts
+├── notebooks/
+│   └── [module_name]/                # Interactive Jupyter Notebooks
+├── notes/
+│   ├── [XX]_[module_name].md         # Module Overview/Master gateway page
+│   └── [module_name]/                # Individual Chapter/Lab detail pages
+│       ├── 01_[topic_name].md
+│       └── 02_[topic_name].md
+├── stylesheets/
+│   └── extra.css                     # Consolidated CSS stylesheet
+```
+
+---
+
+## 📄 Architectural Decision Records (ADRs) Rules
+
+When documenting architectural decisions, they must be saved under `docs/adr/` using the format `docs/adr/[XXXX]-[kebab-case-title].md`.
+
+### ADR Structure Template:
+```markdown
+# ADR [XXXX]: [Title]
+
+## Status
+Proposed | Accepted | Rejected | Deprecated | Superseded
+
+## Date
+YYYY-MM-DD
+
+## Context
+[Describe the problem context, forces, and constraints we are facing.]
+
+## Decision
+[State the exact architectural choice we are adopting.]
+
+## Consequences
+* **Positive:** [Benefit 1]
+* **Negative:** [Consequence/Trade-off 1]
+```
+
+### Immutability Governance:
+* **Historical Integrity:** Once an ADR is marked `Accepted`, it is **immutable**. It must never be edited or retroactively modified to fit new changes.
+* **Overriding Decisions:** If a past decision changes, create a **new ADR** with status `Accepted`, referencing the old ADR as `Supersedes: ADR [XXXX]`. Update the status of the old ADR to `Superseded`.
+
+---
+
 ## 🧱 Reusable Elements Rules
 
 1. **No Duplicate Code/HTML:** Never duplicate complex HTML buttons or layouts across pages.

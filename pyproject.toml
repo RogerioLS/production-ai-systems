@@ -56,6 +56,8 @@ docs = [
     "mkdocstrings[python]",
     "mkdocs-mermaid2-plugin",
     "mkdocs-jupyter",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-timetoread-plugin",
 ]
 
 [tool.setuptools]
@@ -79,6 +81,6 @@ select = ["E", "F", "B", "I"]
 exclude = ["*.ipynb", "**/*.ipynb", "**/notebooks/**"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "projects"]
 python_files = "test_*.py"
 addopts = "--cov=source --cov-report=term-missing"

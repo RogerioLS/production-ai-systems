@@ -1,5 +1,11 @@
 # Production AI Systems Documentation
 
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![LLMs](https://img.shields.io/badge/LLMs-GPT--4o%20%7C%20Claude%20%7C%20DeepSeek-green)
+![Status](https://img.shields.io/badge/status-in%20progress-orange)
+![Focus](https://img.shields.io/badge/focus-production%20ai%20systems-purple)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+
 Welcome to the official documentation for the **Production AI Systems** roadmap. This project is a comprehensive guide and repository designed for Machine Learning and AI engineers transitioning from prototyping to deploying scalable, robust, and production-grade LLM applications.
 
 ---

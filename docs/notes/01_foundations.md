@@ -17,11 +17,13 @@ To keep the material focused and structured, we have divided this module into tw
 
 ### 1. 📊 [LAB-01: Tokenization Math of Compression](a_llm_basics/01_tokenization.md)
 Benchmarks BPE vs WordPiece tokenizers, analyzes the character footprint of structured data (JSON), and quantifies the multilingual "Token Tax" on non-English text.
+
 * **Core concepts:** subword segmentation, compression ratio, byte representation.
 * **Interactive Playground:** [tokenization_playground.ipynb](../../notebooks/a_llm_basics/tokenization_playground.ipynb)
 
 ### 2. 📐 [LAB-02: Embedding Geometry & Semantic Search](a_llm_basics/02_embeddings.md)
 Explores the Manifold Hypothesis in high-dimensional vector spaces, implements Cosine Similarity manually, and visualizes word clusters in 2D and 3D.
+
 * **Core concepts:** metric spaces, cosine vs. Euclidean distances, PCA, t-SNE, semantic search indexing.
 * **Interactive Playground:** [embeddings_playground.ipynb](../../notebooks/a_llm_basics/embeddings_playground.ipynb)
 

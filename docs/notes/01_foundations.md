@@ -1,26 +1,164 @@
+---
+tags:
+  - 🟢 Beginner
+  - 💻 Interactive Playgrounds
+  - 🔬 Math & Theory
+---
+
 # 01 - Foundations: Large Language Models
 
-## 🎯 Objective
-Deep understanding of model internals, inference, tokenization math, embedding geometry, and self-attention mechanics.
+## 🎯 Learning Objectives
+After reading this chapter, you will be able to:
 
-## 📚 Concepts & Math Alignment
+* Explain the inner workings of subword tokenization algorithms (**BPE** and **WordPiece**).
+* Compute and analyze statistical compression ratios across multiple text domains.
+* Define the **Manifold Hypothesis** and its significance in semantic representation.
+* Manually implement **Cosine Similarity** and explain why Euclidean distance fails in high-dimensional spaces.
+* Apply linear (**PCA**) and non-linear (**t-SNE**) dimensionality reduction to project and visualize embeddings in 2D/3D.
+
+---
+
+## 🎓 Prerequisites
+To get the most out of this chapter, we recommend:
+
+* **Basic Linear Algebra:** Vectors, vector norms, dot product, and eigenvectors.
+* **Basic Probability:** Probability distributions, Kullback-Leibler (KL) divergence, and variance.
+* **Python Programming:** Familiarity with Python OOP and basic array manipulation using `NumPy`.
+
+---
+
+## 🧠 Level 1: Intuition & Concepts
+
 ### 1. Tokenization as Statistical Compression
-Tokenization is a fundamental data compression task. Given a corpus, we learn a vocabulary $V$ that maps variable-length sequences of characters to integer IDs. The compression efficiency is defined by:
-$\text{Compression Ratio} = \frac{\text{Bytes of UTF-8 Text}}{\text{Tokens Generated}}$
+LLMs do not process raw text directly. Instead, they rely on a **Tokenizer** to split input text into smaller units called **Tokens**, mapping them to integer IDs within a fixed vocabulary.
+We can frame tokenization as a statistical data compression task: the goal is to encode the highest amount of textual information using the fewest tokens possible, maximizing the efficiency of the model's limited context window.
 
-- **[BPE (Byte Pair Encoding)](#ref-bpe):** Merges the most frequent adjacent byte/token pairs iteratively. Used in GPT-4 (`cl100k_base`), GPT-4o (`o200k_base`), Llama, and Claude.
-- **WordPiece:** Merges the pair that maximizes the likelihood of the corpus under a unigram model, maximizing the mutual information:
-  $\text{Score}(A, B) = \frac{\text{count}(A, B)}{\text{count}(A) \times \text{count}(B)}$
+### 2. The Manifold Hypothesis
+The **Manifold Hypothesis** states that real-world high-dimensional data (such as text representations in a 768 or 1536-dimensional space) does not spread out uniformly. Instead, it concentrates near lower-dimensional, non-linear sub-spaces (manifolds).
+By mapping words to dense continuous vectors, LLMs learn a smooth manifold where:
+* **Semantic proximity** translates to spatial proximity (similar words cluster together).
+* **Directions** capture conceptual relationships (e.g., $\vec{v}_{\text{King}} - \vec{v}_{\text{Man}} + \vec{v}_{\text{Woman}} \approx \vec{v}_{\text{Queen}}$).
 
-For a detailed walkthrough of subword tokenization algorithms, refer to the [Hugging Face Tokenizers Guide](#ref-huggingface).
+### 3. Dimensionality Reduction: PCA vs. t-SNE
+To visualize and analyze these manifolds, we project them to 2D/3D space using:
+* **PCA (Principal Component Analysis):** A linear projection that maximizes variance along orthogonal axes. It preserves the **global geometry** and large distances, but can squish local neighbor relationships.
+* **t-SNE (t-Distributed Stochastic Neighbor Embedding):** A non-linear, probabilistic technique that minimizes divergence between pairwise similarities. It excels at preserving **local neighborhoods** and clusters, though the absolute scale and global positions are not preserved.
+
+### 4. Metric Spaces: Cosine Similarity vs. Euclidean Distance
+In high-dimensional embedding spaces, we measure similarity using the angle between vectors rather than their straight-line distance.
+* **Why Cosine Similarity?** Modern embeddings generally normalize vectors to unit length ($\|u\|_2 = 1$). Under unit normalization, Cosine Similarity is equivalent to a simple dot product, and directly maps to Euclidean distance:
+  $$\|u - v\|_2^2 = \|u\|_2^2 + \|v\|_2^2 - 2(u \cdot v) = 2 - 2\cos(\theta)$$
+* **Curse of Dimensionality:** In very high dimensions, Euclidean distance becomes less discriminative because the distance between almost all pairs of points converges to the same value. Cosine similarity focuses purely on the **angular difference** (direction) rather than magnitude, which captures semantic alignment more effectively.
+
+---
+
+## 💻 Level 2: Implementation
+
+Here is how we model these concepts in clean, SOLID code:
+
+### 1. Tokenizer Interfaces & Wrapper Class
+We define a decoupled abstraction for tokenizers to easily switch backend providers:
+
+```python
+from abc import ABC, abstractmethod
+
+class BaseTokenizer(ABC):
+    @abstractmethod
+    def encode(self, text: str) -> list[int]:
+        """Converts raw text into a list of token IDs."""
+        pass
+
+    @abstractmethod
+    def decode(self, ids: list[int]) -> str:
+        """Converts a list of token IDs back into raw text."""
+        pass
+```
+
+### 2. Manual Cosine Similarity implementation
+We compute cosine similarity manually using NumPy, ensuring safe division checks:
+
+```python
+import numpy as np
+
+def cosine_similarity(u: np.ndarray, v: np.ndarray) -> float:
+    """Computes the cosine similarity between two 1D arrays."""
+    norm_u = np.linalg.norm(u)
+    norm_v = np.linalg.norm(v)
+    if norm_u == 0.0 or norm_v == 0.0:
+        return 0.0
+    return float(np.dot(u, v) / (norm_u * norm_v))
+```
+
+---
+
+## 📐 Level 3: Mathematical Foundations
+
+For a deep understanding of these algorithms, we explore their mathematical formulations.
+
+??? note "📐 LAB-01: Tokenizer Algorithms Math"
+    ### Byte Pair Encoding (BPE)
+    BPE initializes the vocabulary with all individual characters (single bytes) and iteratively merges the most frequent adjacent pair of tokens found in the training corpus:
+
+    $$\text{Merged Pair} = \arg\max_{A, B \in V} \text{Count}(A, B)$$
+
+    ### WordPiece
+    WordPiece merges the pair of tokens that maximizes the likelihood of the training data under a unigram language model. This corresponds to maximizing the mutual information score:
+
+    $$\text{Score}(A, B) = \frac{\text{count}(A, B)}{\text{count}(A) \times \text{count}(B)}$$
+
+    If $A$ and $B$ almost always appear together and rarely apart, their score is high, leading to a merge.
+
+??? note "📐 LAB-02: Geometric Metric Spaces & Reductions Math"
+    ### Cosine Similarity Formula
+    The similarity measures the cosine of the angle $\theta$ between two non-zero vectors $u$ and $v$:
+
+    $$\text{Cosine Similarity}(u, v) = \cos(\theta) = \frac{u \cdot v}{\|u\|_2 \|v\|_2} = \frac{\sum_{i=1}^d u_i v_i}{\sqrt{\sum_{i=1}^d u_i^2} \sqrt{\sum_{i=1}^d v_i^2}}$$
+
+    ### PCA (Principal Component Analysis)
+    PCA projects high-dimensional data onto orthogonal axes that maximize variance. This is done by computing the eigenvectors and eigenvalues of the covariance matrix of the data $\mathbf{X}$:
+
+    $$\mathbf{\Sigma} = \frac{1}{n-1} \mathbf{X}^T \mathbf{X}$$
+
+    $$\mathbf{\Sigma} v_i = \lambda_i v_i$$
+
+    The eigenvectors $v_i$ with the largest eigenvalues $\lambda_i$ define the principal axes of projection.
+
+    ### t-SNE (t-Distributed Stochastic Neighbor Embedding)
+    t-SNE maps high-dimensional points to a low-dimensional manifold:
+    1. In high-dimensional space, we define the probability distribution $p_{j|i}$ that point $x_i$ picks $x_j$ as its neighbor under a Gaussian:
+       $$p_{j|i} = \frac{\exp(-\|x_i - x_j\|^2 / 2\sigma_i^2)}{\sum_{k \neq i} \exp(-\|x_i - x_k\|^2 / 2\sigma_i^2)}$$
+
+    2. In low-dimensional space, we define the probability distribution $q_{ij}$ using a heavy-tailed Student-t distribution (1 degree of freedom) to avoid the "crowding problem":
+       $$q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k} \sum_{l \neq k} (1 + \|y_k - y_l\|^2)^{-1}}$$
+
+    3. We minimize the Kullback-Leibler (KL) divergence between $P$ and $Q$ using gradient descent:
+       $$KL(P || Q) = \sum_{i} \sum_{j \neq i} p_{ij} \log \frac{p_{ij}}{q_{ij}}$$
+
+---
+
+## 🔬 Level 4: Research Notes (Origin Papers)
+
+These laboratories are directly inspired by these seminal papers:
+
+* **Byte Pair Encoding:** adapt subword units for machine translation, resolving the out-of-vocabulary (OOV) problem ([Sennrich et al., 2015](#ref-bpe)).
+* **t-SNE Visualization:** Laurens van der Maaten and Geoffrey Hinton introduced the t-SNE algorithm ([Van der Maaten & Hinton, 2008](#ref-tsne)), showing how Student-t distributions preserve local topologies.
+* **The Transformer:** Vaswani et al. introduced self-attention mechanism layers ([Vaswani et al., 2017](#ref-attention)).
+
+---
+
+## 🏭 Production Insights
+
+!!! note "🏭 Token Tax & Localization"
+    * **The Portuguese Token Tax:** Older vocabularies split non-English letters (like `ç`, `ã`) into multiple byte tokens. The transition from GPT-4 (`cl100k_base`) to GPT-4o (`o200k_base`) expanded the vocabulary, resulting in a **17.5% reduction in token count** for Portuguese texts. This translates directly to lower latency and API costs.
+    * **JSON Schema Overhead:** Structured data serialization for tool calling degrades the compression ratio to ~2.7 B/T. Keep JSON schemas minimal to optimize the context window footprint.
+
+!!! note "🏭 Embeddings & Database Optimization"
+    * **Offline vs Online Embeddings:** Calling embedding APIs in real-time adds 100ms-300ms of latency. Static documents (catalogues, PDFs) should have their embeddings computed *offline* in batches and cached in a Vector Database.
+    * **Normalizing Vectors:** Always normalize your vectors to unit length ($\|u\|_2 = 1$) on ingestion. This allows fast dot product calculation instead of heavy cosine similarity equations during similarity search queries.
 
 ---
 
 ## 📊 LAB-01: Tokenization Benchmark Results
-
-!!! tip "Interactive Playground"
-    You can run and experiment with BPE vs WordPiece algorithms, test custom texts, and check token splits interactively inside the [**tokenization_playground.ipynb**](../notebooks/a_llm_basics/tokenization_playground.ipynb) notebook.
-
 
 We compared the tokenizers across various domains. Here is the empirical evaluation:
 
@@ -35,7 +173,7 @@ We compared the tokenizers across various domains. Here is the empirical evaluat
 | **Numeric / Tabular** | 1.737 B/T | 1.737 B/T | 2.000 B/T | 1.886 B/T |
 | **Emojis / Special Chars** | 2.077 B/T | 1.620 B/T | 1.446 B/T | 10.125 B/T* |
 
-*\*Note: BERT's high ratio on Emojis is an artifact of replacing all unrecognized emojis with a single `[UNK]` token, representing a loss of information, whereas GPT models encode them natively without information loss.*
+*\*Note: BERT's high ratio on Emojis is an artifact of replacing all unrecognized emojis with a single `[UNK]` token, representing a loss of information, whereas GPT models encode them natively.*
 
 ### 2. Token Counts (Total Tokens Generated)
 *Lower token count means lower latency and API cost.*
@@ -50,30 +188,12 @@ We compared the tokenizers across various domains. Here is the empirical evaluat
 
 ---
 
-## 💡 Key Architectural Insights
-
-1. **The Portuguese Token Tax Reduction:**
-   GPT-4o (`o200k_base`) uses a larger vocabulary of 200,000 tokens compared to GPT-4's 100,000. In Portuguese, this results in a **17.5% reduction in token count** (from 40 tokens to 33 tokens). For production systems processing large documents in Portuguese, migrating to GPT-4o or a model with a similar expanded vocabulary directly yields 17.5% cost savings and lower latency.
-
-2. **JSON & Structured Tool Calling Overhead:**
-   Structured JSON parsing has a compression ratio of only ~2.7 B/T compared to ~5.2 B/T for English text. Since agent workflows rely heavily on JSON schemas for Tool Calling, this structural overhead represents a significant cost driver in multi-agent routing.
-
-3. **Digit Splitting in Finance:**
-   Numeric data is tokenized at a very low compression ratio (~1.7 B/T). Tokenizers split numbers into individual or pairs of digits to allow the model to generalize math operations better, but this increases the token footprint of financial tabular data.
-
-4. **Local Fallback Strategy:**
-   For local development or API-free testing, local model routing and orchestration can be implemented using [Ollama & LiteLLM](#ref-litellm).
-
----
-
 ## 📐 LAB-02: Embedding Geometry & Manifold Hypothesis
 
-!!! tip "Interactive Playground"
-    You can run and experiment with these mathematical calculations, queries, and visualizations interactively inside the
-    [**embeddings_playground.ipynb**](../notebooks/a_llm_basics/embeddings_playground.ipynb) notebook.
+We map semantic strings to high-dimensional spaces and project them using PCA and t-SNE.
 
 ### 1. Geometric Pipeline
-The flowchart below illustrates how raw semantic strings are mapped to vector spaces and subsequently projected to 2D for human analysis, preserving either local or global topological features:
+The flowchart below illustrates how raw semantic strings are mapped to vector spaces and subsequently projected to 2D:
 
 ```mermaid
 flowchart TD
@@ -85,48 +205,54 @@ flowchart TD
     TSNE -->|Neighbor Mapping| VizTSNE[2D t-SNE Visualization]
 ```
 
-#### Convergence Animation (t-SNE Morphogenesis)
-Below is the animated visualization showing how high-dimensional word vectors converge onto a 2D plane using t-SNE. Points start in random high-entropy coordinates and migrate smoothly toward their respective semantic clusters:
+### 2. Convergence Animation (t-SNE Morphogenesis)
+t-SNE converges onto a 2D plane. Points start in random high-entropy coordinates and migrate smoothly toward their respective semantic clusters:
 
 ![t-SNE Convergence Animation](../assets/a_llm_basics/embedding_manifold.gif)
 
-#### 3D Space Rotation Animation (PCA 3D Representation)
-Below is the 3D projection of the 100-dimensional word embeddings via PCA. The 360-degree rotation highlights the volumetric separation of the semantic clusters (Food, Tech, Sports, Animals) in the latent metric space:
+### 3. 3D Space Rotation Animation (PCA 3D Representation)
+A 3D projection of the 100-dimensional word embeddings via PCA. The 360-degree rotation highlights the volumetric separation of the clusters:
 
 ![3D PCA Manifold Rotation](../assets/a_llm_basics/embedding_rotation_3d.gif)
 
-### 2. The Manifold Hypothesis
-The [Manifold Hypothesis](#ref-manifold) states that real-world high-dimensional data (like text embeddings in a 768 or 1536-dimensional space) lies on lower-dimensional, non-linear manifolds embedded within the high-dimensional space. By mapping discrete words or tokens into dense continuous vectors, LLMs learn smooth manifolds where:
-- **Semantic proximity** translates to spatial proximity.
-- **Concepts** cluster organically (e.g., technology, sports, animals, food).
-- **Directions** capture relationships (e.g., the classic vector analogy: $\vec{v}_{\text{King}} - \vec{v}_{\text{Man}} + \vec{v}_{\text{Woman}} \approx \vec{v}_{\text{Queen}}$).
+### 4. Empirical Evaluation Metrics
+We measure the cosine similarity on our dataset to evaluate clustering quality:
 
-### 3. Dimensionality Reduction: PCA vs. t-SNE
-To visualize and analyze these manifolds, we project them to 2D using:
-- **[PCA (Principal Component Analysis)](#ref-pca):** A linear projection that maximizes variance along orthogonal axes. It preserves **global geometry** and large distances but can squash local cluster relationships.
-- **[t-SNE (t-Distributed Stochastic Neighbor Embedding)](#ref-tsne):** A non-linear, probabilistic technique that minimizes the divergence between pairwise similarities in high-dimensional and low-dimensional spaces. It excels at preserving **local neighborhoods** and clusters, though the absolute scale and global relative positioning of clusters are not preserved.
-
-### 4. Metric Spaces: Cosine Similarity vs. Euclidean Distance
-In high-dimensional embedding spaces, we measure proximity using **[Cosine Similarity](#ref-cosine-similarity)**:
-$$\text{Cosine Similarity}(u, v) = \cos(\theta) = \frac{u \cdot v}{\|u\|_2 \|v\|_2} = \frac{\sum_{i=1}^d u_i v_i}{\sqrt{\sum_{i=1}^d u_i^2} \sqrt{\sum_{i=1}^d v_i^2}}$$
-
-- **Why Cosine Similarity?** Modern embeddings generally normalize vectors to unit length ($\|u\|_2 = 1$). Under unit normalization, Cosine Similarity is equivalent to a simple dot product, and directly maps to Euclidean distance:
-  $$\|u - v\|_2^2 = \|u\|_2^2 + \|v\|_2^2 - 2(u \cdot v) = 2 - 2\cos(\theta)$$
-- **Curse of Dimensionality:** In very high dimensions, Euclidean distance becomes less discriminative because the distance between almost all pairs of points converges to the same value. Cosine similarity focuses purely on the **angular difference** (direction) rather than magnitude, which captures semantic alignment more effectively.
+* **Average Similarity within same category (Intra):** `0.5945`
+* **Average Similarity across different categories (Inter):** `-0.0131`
+* **Discriminative Margin:** **`0.6077`** (validates clean category clustering).
 
 ---
 
-## 🎮 Code Demonstration & Interactive Playgrounds
+--8<-- "includes/templates/playground_card_foundations.md"
 
-To explore, run, and experiment with the implementations of these algorithms in detail, we have consolidated all code documentation and execution patterns inside interactive Jupyter Notebooks.
+---
 
-Rather than reading dry static code documentation, you can run benchmarks, compute similarities, and manipulate 2D/3D charts directly:
+## 🧪 Try It Yourself (Experiments)
 
-👉 **[Launch Tokenization Benchmark Playground](../notebooks/a_llm_basics/tokenization_playground.ipynb)**
+Explore these exercises in the Jupyter Playgrounds:
 
-👉 **[Launch Embedding Geometry Playground](../notebooks/a_llm_basics/embeddings_playground.ipynb)**
+1. **t-SNE Perplexity Shift:**
+   In the embedding playground, change the `perplexity` parameter from `5` to `30`. Note how the local neighborhood structure breaks when the perplexity exceeds the number of sample points.
+2. **Out-of-Vocabulary Analysis:**
+   Input blended-category queries (like *"sports car"* or *"fruit juice"*) to the `SemanticSearchEngine` and analyze which cluster center pulls the query vector closest.
 
-*These playgrounds include imports and examples for BPE/WordPiece tokenizers, the custom category cluster embedder, manual cosine similarity, and dimensionality reduction projections.*
+---
+
+## 🧭 Related Concepts
+
+These topics lay the foundation for subsequent modules:
+
+* **Vector Databases & ANN Indexes:** Scalable vector index structures (HNSW, IVF-Flat).
+* **Attention Mechanism (Self-Attention):** Dynamic token similarity computing using dot products.
+* **Semantic Chunking:** Text split strategies based on embedding variance.
+
+---
+
+## 🏁 Key Takeaways
+* **Tokenization is Compression:** Vocabulary models optimize text encoding efficiency to manage context limitations.
+* **Cosine Similarity Preference:** Angular measurement is preferred over Euclidean distance to counter the curse of high dimensions.
+* **PCA vs t-SNE Trade-offs:** PCA retains global geometric structure; t-SNE focuses purely on local neighbor groupings.
 
 ---
 
@@ -134,150 +260,6 @@ Rather than reading dry static code documentation, you can run benchmarks, compu
 
 Below are the academic references and technical guides used in this module, structured in a technical post-card format:
 
-<style>
-.blog-override-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-top: 20px;
-}
-
-.blog-override-post {
-  padding: 12px 20px 12px 14px;
-  margin-top: 10px;
-  border: 1px solid transparent;
-  border-left: 4px solid var(--md-primary-fg-color, #3f51b5);
-  cursor: pointer;
-  display: block;
-  text-decoration: none !important;
-  color: inherit !important;
-}
-
-.blog-override-post .blog-post-title {
-  color: #3f51b5 !important;
-  font-size: 1.15rem;
-  font-weight: 500;
-  margin-top: 0;
-  margin-bottom: .35rem;
-  line-height: 1.3;
-}
-
-.blog-post-description {
-  color: var(--md-typeset-color);
-  font-size: 0.85rem;
-  margin-top: 0.4rem;
-  margin-bottom: 0;
-}
-
-.blog-override-post:hover {
-  border: 1px solid #e8e8e877;
-  box-shadow: 3px 4px 10px #e8e8e8;
-}
-
-.blog-override-post,
-.blog-override-post>* {
-  transition: all 0.3s ease-in-out;
-}
-
-.blog-override-post:hover>* {
-  transform: translateX(30px);
-}
-
-.blog-post-description,
-.blog-post-extra {
-  opacity: 0.8;
-}
-
-.blog-override-post:hover .blog-post-description,
-.blog-override-post:hover .blog-post-extra {
-  opacity: 1;
-}
-
-.blog-override-post:hover .blog-post-title {
-  color: #ff9800 !important;
-}
-
-.blog-post-extra {
-  font-size: 0.78rem;
-  color: #777;
-  font-weight: 700;
-  margin-bottom: .45rem;
-}
-
-.blogging-tags-grid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 5px;
-}
-
-.blogging-tags-grid code {
-  background-color: #f5eee8;
-  color: #222 !important;
-  border-radius: 5px;
-  font-family: monospace;
-  font-size: .65rem;
-  font-weight: 700;
-  padding: .08rem .24rem;
-  transition: color 0.15s ease;
-}
-
-.blogging-tags-grid code:hover {
-  color: #ff9800 !important;
-}
-
-@media only screen and (max-width: 1000px) {
-  .blog-override-post,
-  .blog-override-post>* {
-    transition: none;
-  }
-
-  .blog-override-post:hover>* {
-    transform: none;
-  }
-
-  .blog-override-post {
-    padding: 30px 0 30px 0;
-    border: none;
-    cursor: pointer;
-  }
-
-  .blog-override-post:hover {
-    border: none;
-    box-shadow: none;
-  }
-
-  .blog-post-description,
-  .blog-post-extra,
-  .blog-override-post:hover .blog-post-description,
-  .blog-override-post:hover .blog-post-extra {
-    opacity: 1;
-  }
-}
-
-/* Dark Mode Slate Support */
-[data-md-color-scheme="slate"] .blog-override-post:hover {
-  border-color: #334155;
-  box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.4);
-}
-[data-md-color-scheme="slate"] .blog-override-post .blog-post-title {
-  color: #818cf8 !important;
-}
-[data-md-color-scheme="slate"] .blog-override-post:hover .blog-post-title {
-  color: #ff9800 !important;
-}
-[data-md-color-scheme="slate"] .blogging-tags-grid code {
-  background-color: #334155;
-  color: #cbd5e1 !important;
-}
-[data-md-color-scheme="slate"] .blogging-tags-grid code:hover {
-  color: #ff9800 !important;
-}
-[data-md-color-scheme="slate"] .blog-post-extra {
-  color: #94a3b8;
-}
-</style>
 
 ### 📄 Academic & Seminal Papers
 

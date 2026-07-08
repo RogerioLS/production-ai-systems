@@ -8,6 +8,7 @@ Accepted
 
 ## Context
 We need to establish a repository layout for the `production-ai-systems` roadmap that accommodates:
+
 - Multiple independent coding projects representing learning modules.
 - Centralized configurations for code quality, formatting, and linters.
 - A unified documentation system compiled via MkDocs.
@@ -15,6 +16,7 @@ We need to establish a repository layout for the `production-ai-systems` roadmap
 
 ## Decision
 We adopt a multi-module monorepo structure with the following layout:
+
 - **`projects/`:** Contains isolated directories for each module (e.g., `projects/a_llm_basics/`, `projects/b_prompt_engineering/`).
 - **Module Structure:** Each module contains:
   - `src/` for source code.

@@ -96,8 +96,8 @@ This math is integrated inside our `SemanticSearchEngine`, which indexes unit-no
 ---
 
 ## 🔬 Level 4: Research Notes (Origin Papers)
-* **t-SNE Visualization:** Laurens van der Maaten and Geoffrey Hinton introduced the t-SNE algorithm ([Van der Maaten & Hinton, 2008](../../notes/01_foundations.md#ref-tsne)), showing how Student-t distributions preserve local topologies.
-* **The Manifold Hypothesis:** For a mathematical deep dive into data manifolds, consult the wiki reference ([Manifold Hypothesis](../../notes/01_foundations.md#ref-manifold)).
+* **t-SNE Visualization:** Laurens van der Maaten and Geoffrey Hinton introduced the t-SNE algorithm ([Van der Maaten & Hinton, 2008](index.md#ref-tsne)), showing how Student-t distributions preserve local topologies.
+* **The Manifold Hypothesis:** For a mathematical deep dive into data manifolds, consult the wiki reference ([Manifold Hypothesis](index.md#ref-manifold)).
 
 ---
 
@@ -126,12 +126,12 @@ Our category-based embedding space (100D) yielded these semantic metric distance
 ### 1. t-SNE Morphogenesis (2D Convergence)
 Points starting in random coordinates converge onto a 2D plane:
 
-![t-SNE Convergence Animation](../../assets/a_llm_basics/embedding_manifold.gif)
+![t-SNE Convergence Animation](../assets/a_llm_basics/embedding_manifold.gif)
 
 ### 2. 3D PCA Latent Space Rotation
 A 3D projection highlights the volumetric separation of the semantic clusters:
 
-![3D PCA Manifold Rotation](../../assets/a_llm_basics/embedding_rotation_3d.gif)
+![3D PCA Manifold Rotation](../assets/a_llm_basics/embedding_rotation_3d.gif)
 
 ---
 

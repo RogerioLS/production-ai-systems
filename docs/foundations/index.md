@@ -15,23 +15,23 @@ Welcome to the **Foundations of Large Language Models** module. This module expl
 
 To keep the material focused and structured, we have divided this module into two distinct, highly technical laboratories:
 
-### 1. 📊 [LAB-01: Tokenization Math of Compression](a_llm_basics/01_tokenization.md)
+### 1. 📊 [LAB-01: Tokenization Math of Compression](lab01.md)
 Benchmarks BPE vs WordPiece tokenizers, analyzes the character footprint of structured data (JSON), and quantifies the multilingual "Token Tax" on non-English text.
 
 * **Core concepts:** subword segmentation, compression ratio, byte representation.
-* **Interactive Playground:** [tokenization_playground.ipynb](../notebooks/a_llm_basics/tokenization_playground.ipynb)
+* **Interactive Playground:** [tokenization_playground.ipynb](tokenization_playground.ipynb)
 
-### 2. 📐 [LAB-02: Embedding Geometry & Semantic Search](a_llm_basics/02_embeddings.md)
+### 2. 📐 [LAB-02: Embedding Geometry & Semantic Search](lab02.md)
 Explores the Manifold Hypothesis in high-dimensional vector spaces, implements Cosine Similarity manually, and visualizes word clusters in 2D and 3D.
 
 * **Core concepts:** metric spaces, cosine vs. Euclidean distances, PCA, t-SNE, semantic search indexing.
-* **Interactive Playground:** [embeddings_playground.ipynb](../notebooks/a_llm_basics/embeddings_playground.ipynb)
+* **Interactive Playground:** [embeddings_playground.ipynb](embeddings_playground.ipynb)
 
-### 3. 🧠 [LAB-03: Attention from Scratch: PyTorch Linear Algebra](a_llm_basics/03_attention.md)
+### 3. 🧠 [LAB-03: Attention from Scratch: PyTorch Linear Algebra](lab03.md)
 Implements scaled dot-product attention and multi-head attention from scratch using PyTorch linear algebra. Computes bidirectional vs. causal masked matrices.
 
 * **Core concepts:** Scaled Dot-Product, Multi-Head Attention, causal masking, KV projection.
-* **Interactive Playground:** [attention_playground.ipynb](../notebooks/a_llm_basics/attention_playground.ipynb)
+* **Interactive Playground:** [attention_playground.ipynb](attention_playground.ipynb)
 
 ---
 

@@ -5,8 +5,8 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 from loguru import logger
 
-from projects.a_llm_basics.src.embeddings import WordCategoryEmbedder
-from projects.a_llm_basics.src.reducer import DimensionalityReducer
+from projects.a_llm_basics.src.lab_02_embeddings.embeddings import WordCategoryEmbedder
+from projects.a_llm_basics.src.lab_02_embeddings.reducer import DimensionalityReducer
 
 # Configure loguru logger
 logger.remove()

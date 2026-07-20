@@ -1,7 +1,7 @@
 import os
 from typing import Dict
 
-from projects.a_llm_basics.src.tokenizer_math import (
+from projects.a_llm_basics.src.lab_01_tokenization.tokenizer_math import (
     HuggingFaceTokenizer,
     TiktokenTokenizer,
     TokenizationAnalyzer,

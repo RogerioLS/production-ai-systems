@@ -91,8 +91,10 @@ nav:
     - Overview: notes/01_foundations.md
     - "LAB-01: Tokenization": notes/a_llm_basics/01_tokenization.md
     - "LAB-02: Embedding Geometry": notes/a_llm_basics/02_embeddings.md
+    - "LAB-03: Attention Mechanics": notes/a_llm_basics/03_attention.md
     - Tokenization Playground: notebooks/a_llm_basics/tokenization_playground.ipynb
     - Embedding Geometry Playground: notebooks/a_llm_basics/embeddings_playground.ipynb
+    - Attention Playground: notebooks/a_llm_basics/attention_playground.ipynb
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:

@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from loguru import logger
 
-from projects.a_llm_basics.src.embeddings import WordCategoryEmbedder
-from projects.a_llm_basics.src.reducer import DimensionalityReducer
-from projects.a_llm_basics.src.semantic_search import cosine_similarity_matrix
+from projects.a_llm_basics.src.lab_02_embeddings.embeddings import WordCategoryEmbedder
+from projects.a_llm_basics.src.lab_02_embeddings.reducer import DimensionalityReducer
+from projects.a_llm_basics.src.lab_02_embeddings.semantic_search import cosine_similarity_matrix
 
 # Configure loguru logger
 logger.remove()

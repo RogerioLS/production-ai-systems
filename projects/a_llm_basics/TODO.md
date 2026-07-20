@@ -10,6 +10,6 @@
 - [x] [LAB-05] Semantic Search Experiment (Cosine Similarity)
 
 ## Phase 3: Attention & Architecture
-- [ ] [LAB-06] Basic Self-Attention Simulation from Scratch
-- [ ] [LAB-07] Multi-Head Attention Visualization
+- [x] [LAB-06] Basic Self-Attention Simulation from Scratch
+- [x] [LAB-07] Multi-Head Attention Visualization
 - [x] [LAB-08] Document everything in `docs/notes/01_foundations.md`

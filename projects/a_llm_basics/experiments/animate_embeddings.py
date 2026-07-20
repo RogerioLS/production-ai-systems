@@ -7,7 +7,7 @@ import numpy as np
 from loguru import logger
 from sklearn.manifold import TSNE
 
-from projects.a_llm_basics.src.embeddings import WordCategoryEmbedder
+from projects.a_llm_basics.src.lab_02_embeddings.embeddings import WordCategoryEmbedder
 
 # Configure loguru logger
 logger.remove()

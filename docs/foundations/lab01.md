@@ -77,8 +77,8 @@ We wrap OpenAI's `tiktoken` and Hugging Face's `transformers` under this interfa
 ---
 
 ## 🔬 Level 4: Research Notes (Origin Papers)
-* **Byte Pair Encoding:** Sennrich et al. (2015) adapted BPE for subword segmentation in machine translation, solving the out-of-vocabulary (OOV) problem ([Sennrich et al., 2015](../../notes/01_foundations.md#ref-bpe)).
-* **Hugging Face Tokenizers:** For advanced implementation details, consult the Hugging Face Tokenizer guides ([HF Guide](../../notes/01_foundations.md#ref-huggingface)).
+* **Byte Pair Encoding:** Sennrich et al. (2015) adapted BPE for subword segmentation in machine translation, solving the out-of-vocabulary (OOV) problem ([Sennrich et al., 2015](index.md#ref-bpe)).
+* **Hugging Face Tokenizers:** For advanced implementation details, consult the Hugging Face Tokenizer guides ([HF Guide](index.md#ref-huggingface)).
 
 ---
 

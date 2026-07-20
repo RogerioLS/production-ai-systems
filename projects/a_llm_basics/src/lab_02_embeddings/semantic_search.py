@@ -4,7 +4,7 @@ from typing import List, Tuple
 import numpy as np
 from loguru import logger
 
-from projects.a_llm_basics.src.embeddings import BaseEmbedder
+from projects.a_llm_basics.src.lab_02_embeddings.embeddings import BaseEmbedder
 
 # Configure loguru logger
 logger.remove()

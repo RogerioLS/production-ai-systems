@@ -1,9 +1,12 @@
 import numpy as np
 import pytest
 
-from projects.a_llm_basics.src.embeddings import TFIDFEmbedder, WordCategoryEmbedder
-from projects.a_llm_basics.src.reducer import DimensionalityReducer
-from projects.a_llm_basics.src.semantic_search import (
+from projects.a_llm_basics.src.lab_02_embeddings.embeddings import (
+    TFIDFEmbedder,
+    WordCategoryEmbedder,
+)
+from projects.a_llm_basics.src.lab_02_embeddings.reducer import DimensionalityReducer
+from projects.a_llm_basics.src.lab_02_embeddings.semantic_search import (
     SemanticSearchEngine,
     cosine_similarity,
     cosine_similarity_matrix,

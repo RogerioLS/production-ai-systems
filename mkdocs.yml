@@ -88,11 +88,15 @@ nav:
   - Início: index.md
   - Roadmap: roadmap.md
   - Foundations:
-    - Overview: notes/01_foundations.md
-    - "LAB-01: Tokenization": notes/a_llm_basics/01_tokenization.md
-    - "LAB-02: Embedding Geometry": notes/a_llm_basics/02_embeddings.md
-    - Tokenization Playground: notebooks/a_llm_basics/tokenization_playground.ipynb
-    - Embedding Geometry Playground: notebooks/a_llm_basics/embeddings_playground.ipynb
+      - Overview: foundations/index.md
+      - Learning:
+          - "LAB-01: Tokenization": foundations/lab01.md
+          - "LAB-02: Embedding Geometry": foundations/lab02.md
+          - "LAB-03: Attention Mechanics": foundations/lab03.md
+      - Interactive Playgrounds:
+          - "Tokenization & Statistical Compression": foundations/tokenization_playground.ipynb
+          - "Embedding Geometry & Semantic Search": foundations/embeddings_playground.ipynb
+          - "Attention Mechanics & Multi-Head Algebra": foundations/attention_playground.ipynb
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:

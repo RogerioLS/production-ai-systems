@@ -101,7 +101,7 @@ class ScaledDotProductAttention(nn.Module):
 ---
 
 ## 🔬 Level 4: Research Notes (Origin Papers)
-* **Attention Is All You Need:** Vaswani et al. introduced the transformer architecture and MHA ([Vaswani et al., 2017](../../notes/01_foundations.md#ref-attention)), replacing RNNs/CNNs with pure attention blocks.
+* **Attention Is All You Need:** Vaswani et al. introduced the transformer architecture and MHA ([Vaswani et al., 2017](index.md#ref-attention)), replacing RNNs/CNNs with pure attention blocks.
 
 ---
 
@@ -117,7 +117,7 @@ class ScaledDotProductAttention(nn.Module):
 
 Below are the attention weight distributions comparing Bidirectional Self-Attention vs Causal Masked Attention:
 
-![Attention Weights Heatmaps](../../assets/a_llm_basics/attention_weights.png)
+![Attention Weights Heatmaps](../assets/a_llm_basics/attention_weights.png)
 
 --8<-- "includes/templates/a_llm_basics/playground_card_attention.md"
 

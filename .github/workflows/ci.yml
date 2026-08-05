@@ -28,6 +28,20 @@ jobs:
         run: |
           make check
 
+      - name: Cache tiktoken encodings
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/tiktoken
+          key: tiktoken-encodings-v1
+
+      - name: Warm up tiktoken encodings
+        env:
+          TIKTOKEN_CACHE_DIR: ~/.cache/tiktoken
+        run: |
+          python -c "import requests, tiktoken; requests.packages.urllib3.disable_warnings(); requests.get = lambda url, **kw: requests.Session().get(url, verify=False, **kw); tiktoken.get_encoding('cl100k_base')" || true
+
       - name: Run Tests
+        env:
+          TIKTOKEN_CACHE_DIR: ~/.cache/tiktoken
         run: |
           make test

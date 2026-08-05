@@ -33,6 +33,12 @@ Implements scaled dot-product attention and multi-head attention from scratch us
 * **Core concepts:** Scaled Dot-Product, Multi-Head Attention, causal masking, KV projection.
 * **Interactive Playground:** [attention_playground.ipynb](attention_playground.ipynb)
 
+### 4. 🎲 [LAB-04: Inference Math: Sampling, Quantization & Loss Analysis](lab04.md)
+Implements autoregressive token sampling strategies (Temperature, Top-k, Top-p), evaluates Cross-Entropy Loss & Perplexity, and quantifies GPU VRAM & KV-Cache memory footprint across FP16, INT8, and INT4 quantization schemes.
+
+* **Core concepts:** Temperature scaling, Top-k/Top-p Nucleus sampling, Perplexity, Int8/Int4 quantization math, KV Cache memory overhead.
+* **Interactive Playground:** [inference_playground.ipynb](inference_playground.ipynb)
+
 ---
 
 ## 🛠️ Resources & References
@@ -173,6 +179,38 @@ Below are the academic references and technical guides used in this module, styl
       <code>#reference</code>
     </div>
     <p class="blog-post-description">Overview of cosine similarity, its mathematical formulation, and its application in high-dimensional information retrieval and metric vector spaces.</p>
+  </a>
+
+  <!-- Nucleus Sampling Paper -->
+  <a id="ref-nucleus" href="https://arxiv.org/abs/1904.09751" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">The Curious Case of Neural Text Degeneration</h3>
+    <div class="blog-post-extra">
+      <b>Holtzman et al. · </b>
+      <span>2019-04-22</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#sampling</code>
+      <code>#nucleus-sampling</code>
+      <code>#decoding</code>
+      <code>#paper</code>
+    </div>
+    <p class="blog-post-description">Landmark paper introducing Nucleus (Top-p) sampling, demonstrating how dynamic probability truncation prevents repetitive loops in neural text generation.</p>
+  </a>
+
+  <!-- LLM.int8 Paper -->
+  <a id="ref-llmint8" href="https://arxiv.org/abs/2208.07339" target="_blank" class="blog-override-post">
+    <h3 class="blog-post-title">LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale</h3>
+    <div class="blog-post-extra">
+      <b>Dettmers et al. · </b>
+      <span>2022-08-15</span>
+    </div>
+    <div class="blogging-tags-grid">
+      <code>#quantization</code>
+      <code>#int8</code>
+      <code>#vram-optimization</code>
+      <code>#paper</code>
+    </div>
+    <p class="blog-post-description">Introduces vector-wise quantization and outlier feature extraction enabling 8-bit transformer matrix multiplication with zero performance degradation.</p>
   </a>
 
 </div>

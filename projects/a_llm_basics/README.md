@@ -1,6 +1,6 @@
-# 📊 LLM Basics: Tokenization & Embedding Geometry
+# 📊 LLM Foundations: Tokenization, Embeddings, Attention & Inference Math
 
-This module contains the foundational mathematical and architectural implementations of Large Language Model internals, divided into two completed laboratories.
+This module contains the foundational mathematical and architectural implementations of Large Language Model internals, divided into four fully completed laboratories.
 
 ---
 
@@ -46,32 +46,72 @@ Using a 100-dimensional category-based vector space, we evaluated semantic coher
 
 ---
 
+## 🧠 LAB-03: Attention Mechanics from Scratch
+
+This laboratory implements pure PyTorch linear algebra for Transformer self-attention mechanisms and causal autoregressive masking.
+
+### 🧠 Core Concepts
+- **Scaled Dot-Product Attention:** Computes $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$.
+- **Causal Autoregressive Masking:** Prevents leftward information flow in decoder-only models by applying $-\infty$ upper-triangular masks before Softmax.
+- **Multi-Head Attention (MHA):** Enables the model to jointly attend to information from different representation subspaces.
+
+---
+
+## 🎲 LAB-04: Inference Math, Sampling & Quantization
+
+This laboratory models the mathematical mechanics of autoregressive generation, post-training quantization, and hardware memory scaling.
+
+### 🧠 Core Concepts
+- **Autoregressive Sampling:** Temperature scaling ($T$), Top-$k$ filtering, and Top-$p$ (Nucleus) dynamic cumulative truncation.
+- **Uniform Linear Quantization:** Maps FP32 tensors to INT8 and INT4 with scale factors and zero-points, measuring reconstruction fidelity via Signal-to-Quantization-Noise Ratio (SQNR).
+- **Inference Hardware Economics:** Formulates memory allocation for model weights vs. dynamic KV Cache:
+  $$M_{\text{kv}} = 2 \times b_{\text{bytes}} \times n_{\text{layers}} \times d_{\text{model}} \times s_{\text{seq}} \times b_{\text{batch}}$$
+
+### 📊 VRAM Benchmark (8B Model)
+
+| Precision Format | Weights VRAM | KV Cache (8k ctx, B=1) | Total VRAM (B=1, 8k) | Perplexity Shift ($\Delta \text{PPL}$) |
+| --- | --- | --- | --- | --- |
+| **FP32** | 32.0 GB | 4.0 GB | 36.0 GB | 0.00 (Baseline) |
+| **FP16 / BF16** | 16.0 GB | 2.0 GB | 18.0 GB | +0.01 |
+| **INT8** | 8.0 GB | 1.0 GB | 9.0 GB | +0.04 |
+| **INT4 / AWQ** | 4.0 GB | 0.5 GB | 4.5 GB | +0.18 |
+
+---
+
 ## 🚀 Execution & Developer Guides
 
 ### 1. How to run tests
-Verify all implementations (Tokenizers, Embeddings, Reducers, Search Engine):
+Verify all implementations (Tokenizers, Embeddings, Attention, Inference Math):
 ```bash
 make test
 ```
 
 ### 2. Run Experiments & Visualizations
-Generate benchmark metrics and visual manifolds:
+Generate benchmark metrics, visualizations, and animated manifolds:
 
 ```bash
-# Run tokenization benchmark report
+# LAB-01: Tokenization compression benchmark report
 python -m projects.a_llm_basics.experiments.run_compression_benchmark
 
-# Run 2D PCA & t-SNE static mapping
+# LAB-02: 2D PCA & t-SNE static mapping
 python -m projects.a_llm_basics.experiments.run_embeddings_experiment
 
-# Generate 2D t-SNE Morphogenesis convergence animation GIF
+# LAB-02: Generate 2D t-SNE convergence animation GIF
 python -m projects.a_llm_basics.experiments.animate_embeddings
 
-# Generate 3D PCA Space Rotation animation GIF
+# LAB-02: Generate 3D PCA Space Rotation animation GIF
 python -m projects.a_llm_basics.experiments.animate_embeddings_3d
+
+# LAB-03: Scaled Dot-Product & Causal Attention Heatmaps
+python -m projects.a_llm_basics.experiments.run_attention_experiment
+
+# LAB-04: Sampling distributions, SQNR benchmarks & VRAM scaling
+python -m projects.a_llm_basics.experiments.run_inference_experiment
 ```
 
 ### 🎮 Interactive Playgrounds (Google Colab support included)
-You can run and modify cells interactively using the Jupyter Playgrounds. Opening them in Colab automatically clones the repo and configures the environment:
-- **Tokenization:** [tokenization_playground.ipynb](notebooks/tokenization_playground.ipynb)
-- **Embeddings:** [embeddings_playground.ipynb](notebooks/embeddings_playground.ipynb)
+You can run and modify cells interactively using the Jupyter Playgrounds:
+- **LAB-01 Tokenization:** [tokenization_playground.ipynb](notebooks/tokenization_playground.ipynb)
+- **LAB-02 Embeddings:** [embeddings_playground.ipynb](notebooks/embeddings_playground.ipynb)
+- **LAB-03 Attention:** [attention_playground.ipynb](notebooks/attention_playground.ipynb)
+- **LAB-04 Inference:** [inference_playground.ipynb](notebooks/inference_playground.ipynb)

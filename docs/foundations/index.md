@@ -13,7 +13,7 @@ Welcome to the **Foundations of Large Language Models** module. This module expl
 
 ## 🧭 Module Roadmap & Laboratories
 
-To keep the material focused and structured, we have divided this module into two distinct, highly technical laboratories:
+To keep the material focused and structured, we have divided this module into four distinct, comprehensive laboratories:
 
 ### 1. 📊 [LAB-01: Tokenization Math of Compression](lab01.md)
 Benchmarks BPE vs WordPiece tokenizers, analyzes the character footprint of structured data (JSON), and quantifies the multilingual "Token Tax" on non-English text.

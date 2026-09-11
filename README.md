@@ -116,42 +116,42 @@ Deep understanding of the transition from mathematical operations to emergent AI
 
 ### 📚 Concepts
 
-* [ ] **The Objective Function**: Cross-Entropy Loss and Next Token Prediction math.
-* [ ] **Information Theory**: Kolmogorov Complexity and LLMs as optimal compressors.
-* [ ] **The Transformer Math**:
-    * [ ] Linear Algebra of Self-Attention (Q, K, V matrices).
-    * [ ] Softmax as a probability distribution over the vocabulary.
-    * [ ] Positional Encodings (Sine/Cosine vs RoPE).
-    * [ ] KV Cache and Memory Management.
-* [ ] **Tokens & Embeddings**:
-    * [ ] Tokenization algorithms (BPE, WordPiece).
-    * [ ] Embedding Geometry & The Manifold Hypothesis in high-dimensional spaces.
-* [ ] **Inference & Sampling**:
-    * [ ] Sampling Math: Temperature, Top-p, Top-k, Beam Search.
-    * [ ] Quantization (INT8/FP16/GGUF) and Latency/Cost trade-offs.
-    * [ ] Context Window management and Attention Scaling.
-* [ ] **Emergence & Scaling Laws**:
-    * [ ] Chinchilla Optimality and Scaling Laws.
-    * [ ] Mechanistic Interpretability (Induction heads and circuit analysis).
-* [ ] **System Reliability**: Hallucinations, Grounding, and Fine-Tuning vs RAG concepts.
+* [x] **The Objective Function**: Cross-Entropy Loss and Next Token Prediction math.
+* [x] **Information Theory**: Kolmogorov Complexity and LLMs as optimal compressors.
+* [x] **The Transformer Math**:
+    * [x] Linear Algebra of Self-Attention (Q, K, V matrices).
+    * [x] Softmax as a probability distribution over the vocabulary.
+    * [x] Positional Encodings (Sine/Cosine vs RoPE).
+    * [x] KV Cache and Memory Management.
+* [x] **Tokens & Embeddings**:
+    * [x] Tokenization algorithms (BPE, WordPiece).
+    * [x] Embedding Geometry & The Manifold Hypothesis in high-dimensional spaces.
+* [x] **Inference & Sampling**:
+    * [x] Sampling Math: Temperature, Top-p, Top-k, Beam Search.
+    * [x] Quantization (INT8/FP16/GGUF) and Latency/Cost trade-offs.
+    * [x] Context Window management and Attention Scaling.
+* [x] **Emergence & Scaling Laws**:
+    * [x] Chinchilla Optimality and Scaling Laws.
+    * [x] Mechanistic Interpretability (Induction heads and circuit analysis).
+* [x] **System Reliability**: Hallucinations, Grounding, and Fine-Tuning vs RAG concepts.
 
 ---
 
 ### 🛠️ Tools
 
-* [ ] **Engines**: PyTorch, TransformerLens.
-* [ ] **Tokenizers**: Tiktoken, HuggingFace Tokenizers.
-* [ ] **Local Inference**: Ollama, vLLM, LiteLLM.
-* [ ] **SDKs**: OpenAI SDK, OpenRouter.
+* [x] **Engines**: PyTorch, TransformerLens.
+* [x] **Tokenizers**: Tiktoken, HuggingFace Tokenizers.
+* [x] **Local Inference**: Ollama, vLLM, LiteLLM.
+* [x] **SDKs**: OpenAI SDK, OpenRouter.
 
 ---
 
 ### 🧪 Projects
 
-* [ ] **Attention from Scratch**: Build a minimal GPT-like attention block in pure PyTorch.
-* [ ] **Tokenization Efficiency Lab**: Math of BPE vs WordPiece and cost/context impact.
-* [ ] **Embedding Geometry Lab**: Visualize semantic relationships (King - Man + Woman = Queen) in high-dimensional spaces.
-* [ ] **Loss Landscape Analysis**: Study how Sampling (Temperature) affects the probability distribution.
+* [x] **Attention from Scratch**: Build a minimal GPT-like attention block in pure PyTorch.
+* [x] **Tokenization Efficiency Lab**: Math of BPE vs WordPiece and cost/context impact.
+* [x] **Embedding Geometry Lab**: Visualize semantic relationships (King - Man + Woman = Queen) in high-dimensional spaces.
+* [x] **Loss Landscape Analysis**: Study how Sampling (Temperature) affects the probability distribution.
 * [ ] **Multi-model Benchmark System**: Compare cost, latency, and performance across different providers.
 * [ ] **Fallback Architecture**: Design a robust multi-provider chatbot with automated failover.
 
@@ -698,7 +698,7 @@ The goal is:
 
 | Area               | Status |
 | ------------------ | ------ |
-| Foundations        | 🚧     |
+| Foundations        | ✅      |
 | Prompt Engineering | 🚧     |
 | RAG                | 🚧     |
 | Agents             | ⏳      |

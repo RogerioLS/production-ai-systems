@@ -7,7 +7,7 @@ name = "production-ai-systems"
 version = "0.1.0"
 description = "Advanced roadmap for building production-grade AI systems"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "Rogerio Silva" }

@@ -40,7 +40,7 @@ mindmap
       Learning Path
 ```
 
-### 🧠 [LLM Foundations](notes/01_foundations.md)
+### 🧠 [LLM Foundations](foundations/index.md)
 Explore our experiments, starting with **[LAB-01] Tokenization Math**, which benchmarks BPE vs WordPiece, analyzes token compression ratios, and investigates the Portuguese token tax.
 
 ### 📐 [Architecture & ADRs](architecture/overview.md)

@@ -17,7 +17,7 @@ fi
 #   ✨ feat(foundations): [LAB-01:#2] benchmark tokenization compression
 #   📝 docs(foundations): [LAB-02] visualize manifold hypothesis
 #   🔧 chore(infra): [INFRA] configure pre-commit and git hooks
-COMMIT_REGEX="^([^:]* )?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_\/-]+\))?:\s*(\[([a-zA-Z0-9_:#-]+)\])?\s*(.+)$"
+COMMIT_REGEX="^([^:]* )?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_\/-]+\))?:\s*\[([a-zA-Z0-9_:#-]+)\]\s*(.+)$"
 
 if ! [[ "$COMMIT_MSG" =~ $COMMIT_REGEX ]]; then
     echo ""
@@ -26,10 +26,10 @@ if ! [[ "$COMMIT_MSG" =~ $COMMIT_REGEX ]]; then
     echo "========================================================================"
     echo " ❌ Your message: \"$COMMIT_MSG\""
     echo ""
-    echo " 📐 Required Format:"
+    echo " 📐 Required Format (Bracketed Task ID is strictly mandatory):"
     echo "    <type>(<scope>): [<TASK-ID>:#<ISSUE_NUM>] <description in lowercase>"
     echo "    or: <type>(<scope>): [<TASK-ID>] <description in lowercase>"
-    echo "    or: <type>(<scope>): <description in lowercase>"
+    echo "    or: <type>(<scope>): [<RESERVED-TAG>] <description in lowercase>"
     echo ""
     echo " 📌 Valid Examples:"
     echo "    feat(foundations): [LAB-01:#2] benchmark bpe vs wordpiece"
@@ -39,57 +39,58 @@ if ! [[ "$COMMIT_MSG" =~ $COMMIT_REGEX ]]; then
     echo ""
     echo " 💡 Allowed Types:"
     echo "    feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+    echo ""
+    echo " 📋 Allowed Reserved Tags (for non-lab tasks):"
+    echo "    [INFRA], [CHORE], [DOCS], [FIX], [HOTFIX], [GLOBAL], [CONFIG], [SECURITY], [DEPS], [ENV], [RELEASE]"
     echo "========================================================================"
     exit 1
 fi
 
-# Extract the Raw Task Tag inside brackets [TAG] (e.g. LAB-01:#2 or LAB-01)
-RAW_TASK_TAG="${BASH_REMATCH[5]}"
+# Extract the Raw Task Tag inside brackets [TAG] (e.g. LAB-01:#2 or INFRA)
+RAW_TASK_TAG="${BASH_REMATCH[4]}"
 TASK_TAG=$(echo "$RAW_TASK_TAG" | cut -d':' -f1)
 
 # Reserved global tags that don't need a matching file in .github/issues/
 RESERVED_TAGS=("INFRA" "CHORE" "DOCS" "FIX" "HOTFIX" "GLOBAL" "CONFIG" "SECURITY" "COMMUNITY" "DEPS" "RELEASE" "ENV")
 
-if [ -n "$TASK_TAG" ]; then
-    UPPER_TAG=$(echo "$TASK_TAG" | tr '[:lower:]' '[:upper:]')
+UPPER_TAG=$(echo "$TASK_TAG" | tr '[:lower:]' '[:upper:]')
 
-    # Check if it's a reserved tag
-    for reserved in "${RESERVED_TAGS[@]}"; do
-        if [ "$UPPER_TAG" == "$reserved" ]; then
-            exit 0
+# Check if it's a reserved tag
+for reserved in "${RESERVED_TAGS[@]}"; do
+    if [ "$UPPER_TAG" == "$reserved" ]; then
+        exit 0
+    fi
+done
+
+# Dynamic validation: Check if task exists in .github/issues/
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ISSUES_DIR="$SCRIPT_DIR/../.github/issues"
+
+LOWER_TAG=$(echo "$TASK_TAG" | tr '[:upper:]' '[:lower:]')
+MATCHING_TASK=$(find "$ISSUES_DIR" -maxdepth 1 -iname "*${LOWER_TAG}*" 2>/dev/null | head -n 1)
+
+if [ -z "$MATCHING_TASK" ] && [ -d "$ISSUES_DIR" ]; then
+    echo ""
+    echo "========================================================================"
+    echo " ⛔ COMMIT REJECTED: TASK ID NOT FOUND IN PROJECT"
+    echo "========================================================================"
+    echo " ❌ The task \"[$TASK_TAG]\" does not exist in .github/issues/."
+    echo ""
+    echo " 📋 Valid tasks found locally:"
+    for f in "$ISSUES_DIR"/*.md; do
+        if [ -f "$f" ]; then
+            BASENAME=$(basename "$f" .md)
+            echo "    - $BASENAME"
         fi
     done
-
-    # Dynamic validation: Check if task exists in .github/issues/
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    ISSUES_DIR="$SCRIPT_DIR/../.github/issues"
-
-    LOWER_TAG=$(echo "$TASK_TAG" | tr '[:upper:]' '[:lower:]')
-    MATCHING_TASK=$(find "$ISSUES_DIR" -maxdepth 1 -iname "*${LOWER_TAG}*" 2>/dev/null | head -n 1)
-
-    if [ -z "$MATCHING_TASK" ] && [ -d "$ISSUES_DIR" ]; then
-        echo ""
-        echo "========================================================================"
-        echo " ⛔ COMMIT REJECTED: TASK ID NOT FOUND IN PROJECT"
-        echo "========================================================================"
-        echo " ❌ The task \"[$TASK_TAG]\" does not exist in .github/issues/."
-        echo ""
-        echo " 📋 Valid tasks found locally:"
-        for f in "$ISSUES_DIR"/*.md; do
-            if [ -f "$f" ]; then
-                BASENAME=$(basename "$f" .md)
-                echo "    - $BASENAME"
-            fi
-        done
-        echo ""
-        echo " 💡 What to do:"
-        echo "    1. If this is a project lab task, verify the correct ID (e.g. LAB-01 to LAB-04);"
-        echo "    2. If this is a new task, create the file .github/issues/lab-XX-name.md;"
-        echo "    3. If this is a general change without a task, use a reserved tag:"
-        echo "       [INFRA], [CHORE], [DOCS], [HOTFIX], [SECURITY], [GLOBAL], [RELEASE], [ENV]"
-        echo "========================================================================"
-        exit 1
-    fi
+    echo ""
+    echo " 💡 What to do:"
+    echo "    1. If this is a project lab task, verify the correct ID (e.g. LAB-01 to LAB-04);"
+    echo "    2. If this is a new task, create the file .github/issues/lab-XX-name.md;"
+    echo "    3. If this is a general change without a task, use a reserved tag:"
+    echo "       [INFRA], [CHORE], [DOCS], [HOTFIX], [SECURITY], [GLOBAL], [RELEASE], [ENV]"
+    echo "========================================================================"
+    exit 1
 fi
 
 exit 0

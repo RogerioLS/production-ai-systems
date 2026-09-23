@@ -19,7 +19,7 @@ BRANCH_REGEX = re.compile(
 
 COMMIT_REGEX = re.compile(
     r"^([^:]* )?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)"
-    r"(\([a-zA-Z0-9_\/-]+\))?:\s*(\[([a-zA-Z0-9_:#-]+)\])?\s*(.+)$"
+    r"(\([a-zA-Z0-9_\/-]+\))?:\s*\[([a-zA-Z0-9_:#-]+)\]\s*(.+)$"
 )
 
 RESERVED_TAGS = {
@@ -74,18 +74,18 @@ def validate_commit_message(commit_msg: str, issues_dir: Path) -> Tuple[bool, st
     if not match:
         msg = (
             f"❌ **Invalid Commit Message:** `{first_line}`\n\n"
-            f"**Required Format:**\n"
+            f"**Required Format (Bracketed Task ID is strictly mandatory):**\n"
             f"- `<type>(<scope>): [<TASK-ID>:#<NUM>] <description in lowercase>`\n"
             f"- `<type>(<scope>): [<TASK-ID>] <description in lowercase>`\n"
-            f"- `<type>(<scope>): <description in lowercase>`\n\n"
+            f"- `<type>(<scope>): [<RESERVED-TAG>] <description in lowercase>`\n\n"
             f"**Valid Examples:**\n"
             f"- `feat(foundations): [LAB-01:#2] benchmark tokenization compression`\n"
             f"- `chore(infra): [INFRA] configure pre-commit hooks and command center`\n"
         )
         return False, msg
 
-    # Validate task tag if provided
-    raw_tag = match.group(5)
+    # Validate task tag
+    raw_tag = match.group(4)
     if raw_tag:
         task_tag = raw_tag.split(":")[0].upper()
         if task_tag not in RESERVED_TAGS and issues_dir.exists():

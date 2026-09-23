@@ -15,7 +15,7 @@ fi
 # Examples:
 #   feat(foundations): [LAB-01:#2] benchmark tokenization compression
 #   ✨ feat(foundations): [LAB-01:#2] benchmark tokenization compression
-#   📝 docs(foundations): [LAB-02] visualize manifold hypothesis
+#   📝 docs(foundations): [LAB-02:#3] visualize manifold hypothesis
 #   🔧 chore(infra): [INFRA] configure pre-commit and git hooks
 COMMIT_REGEX="^([^:]* )?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_\/-]+\))?:\s*\[([a-zA-Z0-9_:#-]+)\]\s*(.+)$"
 
@@ -26,15 +26,13 @@ if ! [[ "$COMMIT_MSG" =~ $COMMIT_REGEX ]]; then
     echo "========================================================================"
     echo " ❌ Your message: \"$COMMIT_MSG\""
     echo ""
-    echo " 📐 Required Format (Bracketed Task ID is strictly mandatory):"
-    echo "    <type>(<scope>): [<TASK-ID>:#<ISSUE_NUM>] <description in lowercase>"
-    echo "    or: <type>(<scope>): [<TASK-ID>] <description in lowercase>"
-    echo "    or: <type>(<scope>): [<RESERVED-TAG>] <description in lowercase>"
+    echo " 📐 Required Format:"
+    echo "    Para Tasks/Labs : <type>(<scope>): [<TASK-ID>:#<ISSUE_NUM>] <description>"
+    echo "    Para Infra/Docs : <type>(<scope>): [<RESERVED-TAG>] <description>"
     echo ""
     echo " 📌 Valid Examples:"
     echo "    feat(foundations): [LAB-01:#2] benchmark bpe vs wordpiece"
-    echo "    feat(foundations): [LAB-03] implement scaled dot product attention"
-    echo "    docs(notes): [LAB-04] document inference math and kv cache vram"
+    echo "    feat(foundations): [LAB-04:#5] implement inference math and sampling"
     echo "    chore(infra): [INFRA] configure automated git hooks and make center"
     echo ""
     echo " 💡 Allowed Types:"
@@ -61,6 +59,27 @@ for reserved in "${RESERVED_TAGS[@]}"; do
         exit 0
     fi
 done
+
+# If not reserved, it MUST strictly include the GitHub Issue number (e.g. LAB-01:#2)
+if ! [[ "$RAW_TASK_TAG" =~ ^[a-zA-Z0-9_-]+:#[0-9]+$ ]]; then
+    echo ""
+    echo "========================================================================"
+    echo " ⛔ COMMIT REJECTED: TASK COMMITS MUST INCLUDE GITHUB ISSUE NUMBER"
+    echo "========================================================================"
+    echo " ❌ Your tag: \"[$RAW_TASK_TAG]\""
+    echo ""
+    echo " 📐 Required Format for Project Tasks:"
+    echo "    <type>(<scope>): [<TASK-ID>:#<ISSUE_NUM>] <description in lowercase>"
+    echo ""
+    echo " 📌 Valid Examples:"
+    echo "    feat(foundations): [LAB-01:#2] benchmark tokenization compression"
+    echo "    feat(foundations): [LAB-04:#5] implement inference math and sampling"
+    echo ""
+    echo " 💡 For non-task infrastructure/maintenance changes, use a reserved tag:"
+    echo "    [INFRA], [CHORE], [DOCS], [FIX], [HOTFIX], [CONFIG], [SECURITY], [ENV]"
+    echo "========================================================================"
+    exit 1
+fi
 
 # Dynamic validation: Check if task exists in .github/issues/
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

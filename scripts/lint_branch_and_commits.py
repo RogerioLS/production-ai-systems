@@ -88,17 +88,28 @@ def validate_commit_message(commit_msg: str, issues_dir: Path) -> Tuple[bool, st
     raw_tag = match.group(4)
     if raw_tag:
         task_tag = raw_tag.split(":")[0].upper()
-        if task_tag not in RESERVED_TAGS and issues_dir.exists():
-            lower_tag = task_tag.lower()
-            matching = list(issues_dir.glob(f"*{lower_tag}*"))
-            if not matching:
+        if task_tag not in RESERVED_TAGS:
+            if not re.match(r"^[a-zA-Z0-9_-]+:#[0-9]+$", raw_tag):
                 msg = (
-                    f"❌ **Unknown Task ID:** `[{task_tag}]`\n\n"
-                    f"The task does not exist as a markdown specification in `.github/issues/`.\n"
-                    f"If this is an infrastructure/chore change, use a reserved tag:\n"
-                    f"`[INFRA]`, `[CHORE]`, `[DOCS]`, `[ENV]`."
+                    f"❌ **Task Commits Must Include GitHub Issue Number:** `[{raw_tag}]`\n\n"
+                    f"**Required Format for Project Tasks:**\n"
+                    f"`<type>(<scope>): [<TASK-ID>:#<ISSUE_NUM>] <description in lowercase>`\n\n"
+                    f"**Valid Example:**\n"
+                    f"`feat(foundations): [LAB-01:#2] benchmark tokenization compression`"
                 )
                 return False, msg
+
+            if issues_dir.exists():
+                lower_tag = task_tag.lower()
+                matching = list(issues_dir.glob(f"*{lower_tag}*"))
+                if not matching:
+                    msg = (
+                        f"❌ **Unknown Task ID:** `[{task_tag}]`\n\n"
+                        f"The task does not exist as a markdown specification in `.github/issues/`.\n"
+                        f"If this is an infrastructure/chore change, use a reserved tag:\n"
+                        f"`[INFRA]`, `[CHORE]`, `[DOCS]`, `[ENV]`."
+                    )
+                    return False, msg
 
     return True, ""
 

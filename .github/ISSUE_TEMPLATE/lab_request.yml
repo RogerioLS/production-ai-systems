@@ -1,0 +1,47 @@
+name: 🧪 Proposta de Novo Lab / Task
+description: Sugerir um novo laboratório, benchmark matemático ou experimento para o roadmap.
+title: "[LAB]: "
+labels: ["type: implementation", "priority: normal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Defina os objetivos matemáticos, arquiteturais e critérios de aceite para a nova task de laboratório.
+
+  - type: input
+    id: lab_id
+    attributes:
+      label: 🏷️ ID Sugerido do Lab
+      placeholder: "[LAB-05] ou [LAB-01-PROMPT]"
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: 🎯 Objetivo Didático & de Produção
+      placeholder: Descreva o conceito teórico e a aplicação em produção que este lab aborda.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 📝 Lista de Tarefas Técnicas
+      placeholder: |
+        - [ ] Implementar classe X sob SOLID
+        - [ ] Desenvolver suíte de testes com pytest
+        - [ ] Criar playground interativo no Google Colab
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: ✅ Critérios de Aceite (Definition of Done)
+      placeholder: |
+        - [ ] Código com tipagem estrita (PEP 484)
+        - [ ] make audit passando 100%
+        - [ ] Documentação técnica em docs/
+    validations:
+      required: true

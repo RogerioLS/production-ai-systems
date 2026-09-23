@@ -1,0 +1,43 @@
+"area: foundations":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/a_llm_basics/**", "docs/foundations/**"]
+
+"area: prompt-engineering":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/b_prompt_engineering/**"]
+
+"area: rag":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/c_rag/**"]
+
+"area: agents":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/d_agents/**"]
+
+"area: mcp":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/e_mcp/**"]
+
+"area: llmops":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/f_llmops/**"]
+
+"area: finetuning":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/g_finetuning/**"]
+
+"area: multimodal":
+  - changed-files:
+      - any-glob-to-any-file: ["projects/h_multimodal/**"]
+
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "mkdocs.yml", "*.md"]
+
+"area: infra":
+  - changed-files:
+      - any-glob-to-any-file: ["Makefile", "pyproject.toml", ".githooks/**", "scripts/**", ".pre-commit-config.yaml", ".github/**"]
+
+"type: tests":
+  - changed-files:
+      - any-glob-to-any-file: ["tests/**", "**/tests/**"]

@@ -1,0 +1,50 @@
+name: 🐛 Reporte de Bug / Erro de Execução
+description: Relatar um erro ou comportamento inesperado em algum laboratório, script ou teste do Production AI Systems.
+title: "[BUG]: "
+labels: ["type: bug", "priority: medium"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por relatar o problema! Forneça os detalhes técnicos para reprodução no ambiente.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 Descrição do Bug
+      placeholder: Ao executar o módulo ou teste X, ocorreu a falha...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔄 Passos para Reproduzir
+      placeholder: |
+        1. source ~/miniconda3/etc/profile.d/conda.sh && conda activate automacoes
+        2. make test
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📜 Logs de Erro / Traceback
+      render: shell
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: 📦 Módulo Afetado
+      options:
+        - "a_llm_basics (Foundations)"
+        - "b_prompt_engineering (Prompt Eng & Structured Outputs)"
+        - "c_rag (RAG Systems)"
+        - "d_agents (AI Agents)"
+        - "e_mcp (Model Context Protocol)"
+        - "f_llmops (LLMOps)"
+        - "g_finetuning (Fine-Tuning)"
+        - "h_multimodal (Multimodal AI)"
+        - "infra / tooling (Makefile, git hooks, docs)"
+    validations:
+      required: true

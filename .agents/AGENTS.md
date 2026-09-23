@@ -1,10 +1,10 @@
 # AGENTS.md — Production AI Systems Agent Operating System
 
-**Project:** Production AI Systems  
-**Curriculum / Roadmap:** Production-grade LLMs, RAG, Agents, MCP, OCR, LLMOps & FinAI  
-**Python:** >= 3.10  
-**Purpose:** Master operating protocol for AI coding assistants working in this repository  
-**Version:** 1.0  
+**Project:** Production AI Systems
+**Curriculum / Roadmap:** Production-grade LLMs, RAG, Agents, MCP, OCR, LLMOps & FinAI
+**Python:** >= 3.10
+**Purpose:** Master operating protocol for AI coding assistants working in this repository
+**Version:** 1.0
 
 ---
 

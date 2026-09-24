@@ -7,9 +7,11 @@
 - [x] `[LAB-03]` Attention from Scratch: PyTorch Linear Algebra (#4)
 - [x] `[LAB-04]` Inference Math: Sampling, Quantization & Loss Analysis (#5)
 
-## 🟡 Phase 2: Prompt Engineering
-- [ ] Structured Output with Pydantic
-- [ ] Chain-of-Thought Patterns
+## 🟡 Phase 2: Prompt Engineering & Structured Outputs
+- [ ] `[LAB-05]` Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct
+- [ ] `[LAB-06]` Structured Outputs: Pydantic v2, Instructor & Schema Enforcement
+- [ ] `[LAB-07]` Production Application: Financial Asset & Proposal Extractor
+- [ ] `[LAB-08]` Spec-Driven Development: OpenSpec & Contract Compliance
 
 ## ⏳ Phase 3: RAG
 - [ ] Local Vector Database Setup (Qdrant)

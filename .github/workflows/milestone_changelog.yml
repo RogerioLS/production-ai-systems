@@ -1,0 +1,100 @@
+name: 📜 Automated Milestone Changelog
+
+on:
+  milestone:
+    types: [closed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+jobs:
+  update-changelog:
+    name: Atualizar CHANGELOG.md via GitHub Bot
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Git Identity do Bot
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Atualizar CHANGELOG.md com Issues Concluídas
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MILESTONE_TITLE: ${{ github.event.milestone.title || '02. Prompt Engineering & Structured Outputs' }}
+          MILESTONE_NUMBER: ${{ github.event.milestone.number || '2' }}
+        run: |
+          python3 -c "
+          import os, re, json, subprocess
+          from datetime import date
+          from pathlib import Path
+
+          milestone_title = os.environ.get('MILESTONE_TITLE', '')
+          milestone_number = os.environ.get('MILESTONE_NUMBER', '')
+          changelog_file = Path('CHANGELOG.md')
+
+          if not changelog_file.exists():
+              print('CHANGELOG.md não encontrado!')
+              exit(0)
+
+          # Buscar issues fechadas da milestone
+          cmd = [
+              'gh', 'issue', 'list',
+              '--milestone', milestone_title,
+              '--state', 'closed',
+              '--json', 'number,title'
+          ]
+          res = subprocess.run(cmd, capture_output=True, text=True)
+          issues = json.loads(res.stdout) if res.returncode == 0 and res.stdout.strip() else []
+
+          today_str = date.today().isoformat()
+          version_header = f'## [{milestone_title}] - {today_str}\n\n### Completed Labs & Features\n'
+
+          entries = []
+          for item in issues:
+              entries.append(f'- {item[\"title\"]} (#{item[\"number\"]})')
+
+          if not entries:
+              entries.append(f'- Marco {milestone_title} finalizado com sucesso.')
+
+          new_block = version_header + '\n'.join(entries) + '\n\n'
+
+          content = changelog_file.read_text(encoding='utf-8')
+          if version_header.split(' - ')[0] in content:
+              print('Entrada de Milestone já existente no CHANGELOG.md')
+              exit(0)
+
+          # Inserir logo após '## [Unreleased]'
+          marker = '## [Unreleased]\n'
+          if marker in content:
+              parts = content.split(marker, 1)
+              updated = parts[0] + marker + '\n' + new_block + parts[1].lstrip()
+          else:
+              updated = content + '\n' + new_block
+
+          changelog_file.write_text(updated, encoding='utf-8')
+          print('CHANGELOG.md atualizado com sucesso!')
+          "
+
+      - name: Commit e Push das alterações no CHANGELOG.md
+        run: |
+          git add CHANGELOG.md
+          if git diff --staged --quiet; then
+            echo "Nenhuma alteração a ser commitada no CHANGELOG.md."
+          else
+            git commit -m "docs(changelog): [DOCS] auto-update CHANGELOG.md for closed milestone"
+            git push origin main
+          fi

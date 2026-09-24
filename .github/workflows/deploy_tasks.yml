@@ -1,0 +1,35 @@
+name: 📌 Automated Issue & Task Deployer
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/issues/**"
+      - ".github/scripts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  deploy-tasks:
+    name: Sincronizar Issues e Kanban no GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Git Identity do Bot
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Criar Milestones, Labels e Issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash .github/scripts/setup_kanban_2_prompt_engineering.sh

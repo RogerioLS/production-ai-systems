@@ -1,39 +1,72 @@
 #!/bin/bash
 # Setup Milestone, Labels, and GitHub Issues for Phase 2: Prompt Engineering
-REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || echo "RogerioLS/production-ai-systems")
+set -e
 
-echo "🎯 Criando Milestone: 02. Prompt Engineering & Structured Outputs no repo $REPO..."
-gh api repos/$REPO/milestones -f title="02. Prompt Engineering & Structured Outputs" -f description="Raciocínio avançado (CoT, ReAct), Schemas Pydantic v2, extração e Spec-Driven Development." 2>/dev/null || echo "ℹ️ Milestone já existe ou gh api indisponível"
+REPO="${GITHUB_REPOSITORY:-$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || echo "RogerioLS/production-ai-systems")}"
 
-echo "🏷️ Criando Labels..."
+echo "🎯 Sincronizando Milestone no repositório: $REPO..."
+MILESTONE_TITLE="02. Prompt Engineering & Structured Outputs"
+EXISTING_MILESTONE=$(gh api "repos/$REPO/milestones" --jq ".[] | select(.title==\"$MILESTONE_TITLE\") | .number" 2>/dev/null || true)
+
+if [ -z "$EXISTING_MILESTONE" ]; then
+  gh api "repos/$REPO/milestones" \
+    -f title="$MILESTONE_TITLE" \
+    -f description="Raciocínio avançado (CoT, ReAct), Schemas Pydantic v2, extração e Spec-Driven Development." >/dev/null || true
+  echo "✔ Milestone criada com sucesso!"
+else
+  echo "✔ Milestone já existente (#$EXISTING_MILESTONE)."
+fi
+
+echo "🏷️ Sincronizando Labels..."
 gh label create "area: prompt-engineering" --color "8e44ad" --description "Engenharia de Prompt e Saídas Estruturadas" --force 2>/dev/null || true
 gh label create "type: structured-outputs" --color "16a085" --description "Schemas Pydantic, Instructor e Guardrails" --force 2>/dev/null || true
 gh label create "type: reasoning" --color "f39c12" --description "Padrões de Raciocínio (Few-Shot, CoT, ReAct)" --force 2>/dev/null || true
 
+create_task_if_not_exists() {
+  local title="$1"
+  local labels="$2"
+  local body_file="$3"
+  local task_id="$4"
+
+  # Verifica se já existe uma issue aberta ou fechada com este task_id no título
+  local exists=$(gh issue list --repo "$REPO" --state all --search "$task_id in:title" --json number --jq '.[0].number' 2>/dev/null || true)
+  if [ -n "$exists" ]; then
+    echo "✔ Task $task_id já existe como Issue #$exists. Pulando criação."
+  else
+    echo "➕ Criando Issue: $title..."
+    gh issue create \
+      --repo "$REPO" \
+      --title "$title" \
+      --milestone "$MILESTONE_TITLE" \
+      --label "$labels" \
+      --body-file "$body_file"
+  fi
+}
+
 echo "🚀 Populando o Kanban com as tasks do Módulo 02..."
 
-gh issue create \
-  --title "[LAB-05] Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct" \
-  --milestone "02. Prompt Engineering & Structured Outputs" \
-  --label "area: prompt-engineering,type: implementation,type: reasoning" \
-  --body-file ".github/issues/lab-05-reasoning-patterns.md" 2>/dev/null || echo "ℹ️ Use gh auth login para sincronizar online com o GitHub"
+create_task_if_not_exists \
+  "[LAB-05] Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct" \
+  "area: prompt-engineering,type: implementation,type: reasoning" \
+  ".github/issues/lab-05-reasoning-patterns.md" \
+  "LAB-05"
 
-gh issue create \
-  --title "[LAB-06] Structured Outputs: Pydantic v2, Instructor & Schema Enforcement" \
-  --milestone "02. Prompt Engineering & Structured Outputs" \
-  --label "area: prompt-engineering,type: implementation,type: structured-outputs" \
-  --body-file ".github/issues/lab-06-structured-outputs.md" 2>/dev/null || true
+create_task_if_not_exists \
+  "[LAB-06] Structured Outputs: Pydantic v2, Instructor & Schema Enforcement" \
+  "area: prompt-engineering,type: implementation,type: structured-outputs" \
+  ".github/issues/lab-06-structured-outputs.md" \
+  "LAB-06"
 
-gh issue create \
-  --title "[LAB-07] Production Application: Financial Asset & Proposal Extractor" \
-  --milestone "02. Prompt Engineering & Structured Outputs" \
-  --label "area: prompt-engineering,type: implementation" \
-  --body-file ".github/issues/lab-07-financial-asset-extraction.md" 2>/dev/null || true
+create_task_if_not_exists \
+  "[LAB-07] Production Application: Financial Asset & Proposal Extractor" \
+  "area: prompt-engineering,type: implementation" \
+  ".github/issues/lab-07-financial-asset-extraction.md" \
+  "LAB-07"
 
-gh issue create \
-  --title "[LAB-08] Spec-Driven Development: OpenSpec & Contract Compliance" \
-  --milestone "02. Prompt Engineering & Structured Outputs" \
-  --label "area: prompt-engineering,type: implementation,type: research" \
-  --body-file ".github/issues/lab-08-spec-driven-development.md" 2>/dev/null || true
+create_task_if_not_exists \
+  "[LAB-08] Spec-Driven Development: OpenSpec & Contract Compliance" \
+  "area: prompt-engineering,type: implementation,type: research" \
+  ".github/issues/lab-08-spec-driven-development.md" \
+  "LAB-08"
 
-echo "✅ Script de setup do Kanban para o Módulo 02 concluído!"
+echo "✅ Sincronização do Kanban para o Módulo 02 concluída com sucesso!"

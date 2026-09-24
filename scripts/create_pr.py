@@ -105,24 +105,28 @@ def get_current_branch() -> str:
 
 def extract_task_and_issue(branch: str) -> Tuple[Optional[str], Optional[int]]:
     """Extracts task ID (e.g. LAB-01) and issue number (e.g. 2) from branch or commits."""
-    # Try branch pattern: feat/lab-01-tokenization-math
-    branch_match = re.search(r"lab-(\d+)", branch, re.IGNORECASE)
+    # Try branch pattern: feat/lab-01-tokenization-math or feat/pe-01-structured-outputs
+    branch_match = re.search(r"([a-z]+)-(\d+)", branch, re.IGNORECASE)
     if branch_match:
-        issue_num = int(branch_match.group(1))
-        task_id = f"LAB-{issue_num:02d}"
-        return task_id, issue_num
+        prefix = branch_match.group(1).upper()
+        num = int(branch_match.group(2))
+        task_id = f"{prefix}-{num:02d}"
+        issue_num = num
+    else:
+        task_id = None
+        issue_num = None
 
-    # Try branch-specific commit log pattern
+    # Try branch-specific commit log pattern e.g. [PE-01:#18] or [LAB-01:#2]
     commits = collect_branch_commits()
     for commit_line in commits:
-        commit_match = re.search(r"\[(LAB-(\d+)):#(\d+)\]", commit_line, re.IGNORECASE)
+        commit_match = re.search(r"\[([a-zA-Z0-9_-]+):#(\d+)\]", commit_line)
         if commit_match:
-            return commit_match.group(1).upper(), int(commit_match.group(3))
-        alt_match = re.search(r"\[(LAB-(\d+))\]\s*\(#(\d+)\)", commit_line, re.IGNORECASE)
+            return commit_match.group(1).upper(), int(commit_match.group(2))
+        alt_match = re.search(r"\[([a-zA-Z0-9_-]+)\]\s*\(#(\d+)\)", commit_line)
         if alt_match:
-            return alt_match.group(1).upper(), int(alt_match.group(3))
+            return alt_match.group(1).upper(), int(alt_match.group(2))
 
-    return None, None
+    return task_id, issue_num
 
 
 def read_issue_markdown(issue_num: int) -> Optional[Dict[str, str]]:
@@ -131,10 +135,13 @@ def read_issue_markdown(issue_num: int) -> Optional[Dict[str, str]]:
     if not issues_dir.exists():
         return None
 
-    pattern = f"lab-{issue_num:02d}-*.md"
+    # Search for files matching *issue_num*.md or lab-XX / pe-XX
+    pattern = f"*-{issue_num:02d}-*.md"
     matches = list(issues_dir.glob(pattern))
     if not matches:
-        matches = list(issues_dir.glob(f"lab-{issue_num}-*.md"))
+        matches = list(issues_dir.glob(f"*-{issue_num}-*.md"))
+    if not matches:
+        matches = list(issues_dir.glob(f"*{issue_num}*.md"))
 
     if not matches:
         return None

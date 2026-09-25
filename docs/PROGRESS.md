@@ -8,10 +8,10 @@
 - [x] `[LAB-04]` Inference Math: Sampling, Quantization & Loss Analysis (#5)
 
 ## 🟡 Phase 2: Prompt Engineering & Structured Outputs
-- [ ] `[LAB-05]` Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct
-- [ ] `[LAB-06]` Structured Outputs: Pydantic v2, Instructor & Schema Enforcement
-- [ ] `[LAB-07]` Production Application: Financial Asset & Proposal Extractor
-- [ ] `[LAB-08]` Spec-Driven Development: OpenSpec & Contract Compliance
+- [x] `[LAB-05] (#20)` Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct
+- [ ] `[LAB-06] (#21)` Structured Outputs: Pydantic v2, Instructor & Schema Enforcement
+- [ ] `[LAB-07] (#22)` Production Application: Financial Asset & Proposal Extractor
+- [ ] `[LAB-08] (#23)` Spec-Driven Development: OpenSpec & Contract Compliance
 
 ## ⏳ Phase 3: RAG
 - [ ] Local Vector Database Setup (Qdrant)

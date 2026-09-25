@@ -99,6 +99,8 @@ nav:
           - "Embedding Geometry & Semantic Search": foundations/embeddings_playground.ipynb
           - "Attention Mechanics & Multi-Head Algebra": foundations/attention_playground.ipynb
           - "Inference Math, Sampling & Quantization": foundations/inference_playground.ipynb
+  - Prompt Engineering:
+      - "LAB-05: Reasoning Patterns": prompt_engineering/lab05.md
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:

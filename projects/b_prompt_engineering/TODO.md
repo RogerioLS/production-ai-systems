@@ -1,11 +1,11 @@
 # TODO: Prompt Engineering & Structured Outputs (Module 02)
 
 ## Phase 1: Reasoning Patterns
-- [ ] `[LAB-05]` Implement typed and modular `PromptTemplate` system
-- [ ] `[LAB-05]` Implement `FewShotPrompt` with static & dynamic in-context exemplars
-- [ ] `[LAB-05]` Implement `ChainOfThought` deductive reasoning patterns
-- [ ] `[LAB-05]` Implement `SelfConsistency` stochastic sampling with Majority Voting & entropy metrics
-- [ ] `[LAB-05]` Implement autonomous `ReAct` cognitive engine (`Thought -> Action -> Observation -> Answer`)
+- [x] `[LAB-05]` Implement typed and modular `PromptTemplate` system
+- [x] `[LAB-05]` Implement `FewShotPrompt` with static & dynamic in-context exemplars
+- [x] `[LAB-05]` Implement `ChainOfThought` deductive reasoning patterns
+- [x] `[LAB-05]` Implement `SelfConsistency` stochastic sampling with Majority Voting & entropy metrics
+- [x] `[LAB-05]` Implement autonomous `ReAct` cognitive engine (`Thought -> Action -> Observation -> Answer`)
 
 ## Phase 2: Structured Outputs & Schema Enforcement
 - [ ] `[LAB-06]` Advanced Pydantic v2 schemas with field validation and strict typing

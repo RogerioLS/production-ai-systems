@@ -100,7 +100,11 @@ nav:
           - "Attention Mechanics & Multi-Head Algebra": foundations/attention_playground.ipynb
           - "Inference Math, Sampling & Quantization": foundations/inference_playground.ipynb
   - Prompt Engineering:
-      - "LAB-05: Reasoning Patterns": prompt_engineering/lab05.md
+      - Overview: prompt_engineering/index.md
+      - Learning:
+          - "LAB-05: Reasoning Patterns": prompt_engineering/lab05.md
+      - Interactive Playgrounds:
+          - "Prompt Reasoning & Autonomous ReAct": prompt_engineering/reasoning_playground.ipynb
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:

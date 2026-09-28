@@ -19,10 +19,7 @@ from projects.b_prompt_engineering.src.lab_05_reasoning.templates import (
     ChatPromptTemplate,
     PromptTemplate,
 )
-from projects.b_prompt_engineering.src.lab_05_reasoning.types import (
-    Exemplar,
-    PromptRole,
-)
+from projects.b_prompt_engineering.src.lab_05_reasoning.types import Exemplar, PromptRole
 
 
 class TestPromptTemplates:

@@ -15,29 +15,26 @@ Welcome to the **Prompt Engineering & Structured Outputs** module. This module b
 
 To keep the material structured, rigorous, and production-oriented, this module is divided into four comprehensive laboratories:
 
-### 1. 🧠 [LAB-05: Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct](lab05.md)
+### 1. 🟢 [LAB-05: Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency & ReAct](lab05.md)
 Implements and benchmarks cognitive reasoning induction: Zero-Shot, Few-Shot In-Context Learning (dynamic selection), Chain-of-Thought, Self-Consistency with Shannon Entropy consensus, and autonomous ReAct agent loops.
 
 * **Core concepts:** In-Context Learning, Zero-Shot CoT, Majority Voting, Shannon Entropy, Tool Execution loops.
 * **Interactive Playground:** [reasoning_playground.ipynb](reasoning_playground.ipynb)
 
-### 2. 🧱 [LAB-06: Structured Outputs: Pydantic v2, Instructor & Schema Enforcement](lab06.md)
-Industrial pipeline for structured data extraction with runtime schema validation, OpenAI Tool Calling/JSON mode, XML tag prompting, and Self-Healing / Reflection error recovery loops.
+### 2. ⏳ LAB-06: Structured Outputs: Pydantic v2, Instructor & Schema Enforcement *(Em Desenvolvimento)*
+Pipeline industrial de extração de dados estruturados com validação de esquema em tempo de execução via Pydantic v2, OpenAI Tool Calling/JSON mode, XML tag prompting e loops de auto-correção (*Self-Healing*).
 
-* **Core concepts:** Pydantic v2 validation, JSON Schema, XML delimiters, Self-Healing reflection loops.
-* **Interactive Playground:** [structured_outputs_playground.ipynb](structured_outputs_playground.ipynb)
+* **Status:** Planejado / Aguardando implementação da Issue [#21](https://github.com/RogerioLS/production-ai-systems/issues/21).
 
-### 3. 💼 [LAB-07: Production Application: Financial Asset & Proposal Extractor](lab07.md)
-Production-grade financial document extraction pipeline parsing corporate balance sheets (Assets, Liabilities, EBITDA) and bank credit proposals with deterministic accounting consistency checks (`Assets == Liabilities + Equity`).
+### 3. ⏳ LAB-07: Production Application: Financial Asset & Proposal Extractor *(Em Desenvolvimento)*
+Aplicação de nível de produção para extração e análise de balanços corporativos e propostas de crédito bancário com validação contábil determinística (`Ativo == Passivo + PL`).
 
-* **Core concepts:** Domain modeling, financial parsing, mathematical consistency validation, confidence scoring.
-* **Interactive Playground:** [financial_extractor_playground.ipynb](financial_extractor_playground.ipynb)
+* **Status:** Planejado / Aguardando implementação da Issue [#22](https://github.com/RogerioLS/production-ai-systems/issues/22).
 
-### 4. 📐 [LAB-08: Spec-Driven Development: OpenSpec & Contract Compliance](lab08.md)
-Contract-first AI engineering: formal declarative specifications (`.spec.yaml`), automated Pydantic model generation, and runtime compliance auditing via `SpecComplianceChecker`.
+### 4. ⏳ LAB-08: Spec-Driven Development: OpenSpec & Contract Compliance *(Em Desenvolvimento)*
+Engenharia de IA baseada em contratos: especificações declarativas formais (`.spec.yaml`), geração automatizada de modelos Pydantic e auditoria de conformidade em runtime via `SpecComplianceChecker`.
 
-* **Core concepts:** Contract-first design, OpenSpec, schema generation, runtime compliance verification.
-* **Interactive Playground:** [spec_driven_playground.ipynb](spec_driven_playground.ipynb)
+* **Status:** Planejado / Aguardando implementação da Issue [#23](https://github.com/RogerioLS/production-ai-systems/issues/23).
 
 ---
 

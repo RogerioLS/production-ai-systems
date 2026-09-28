@@ -167,6 +167,6 @@ Our experiments reveal an inverse correlation between Shannon Entropy and ground
 ---
 
 ## 🧭 Related Concepts
-* **Structured Outputs & Pydantic:** Constraining model answers into deterministic JSON/Pydantic schemas ([LAB-06](lab06.md)).
+* **Structured Outputs & Pydantic:** Constraining model answers into deterministic JSON/Pydantic schemas (LAB-06).
 * **RAG (Retrieval-Augmented Generation):** Enhancing prompt context with external vector search data.
 * **Agentic Workflows:** Multi-agent collaboration with LangGraph and autonomous state machines.

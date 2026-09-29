@@ -8,10 +8,10 @@
 - [x] `[LAB-05]` Implement autonomous `ReAct` cognitive engine (`Thought -> Action -> Observation -> Answer`)
 
 ## Phase 2: Structured Outputs & Schema Enforcement
-- [ ] `[LAB-06]` Advanced Pydantic v2 schemas with field validation and strict typing
-- [ ] `[LAB-06]` Native Structured Outputs & Instructor integration
-- [ ] `[LAB-06]` Self-Healing / Reflection error recovery loop for malformed JSON/XML
-- [ ] `[LAB-06]` Benchmark extraction reliability across parsing strategies
+- [x] `[LAB-06]` Advanced Pydantic v2 schemas with field validation and strict typing
+- [x] `[LAB-06]` Native Structured Outputs & Instructor integration
+- [x] `[LAB-06]` Self-Healing / Reflection error recovery loop for malformed JSON/XML
+- [x] `[LAB-06]` Benchmark extraction reliability across parsing strategies
 
 ## Phase 3: Production Domain Application
 - [ ] `[LAB-07]` Extract corporate balance sheets and banking credit proposals

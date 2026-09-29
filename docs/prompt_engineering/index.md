@@ -21,10 +21,11 @@ Implements and benchmarks cognitive reasoning induction: Zero-Shot, Few-Shot In-
 * **Core concepts:** In-Context Learning, Zero-Shot CoT, Majority Voting, Shannon Entropy, Tool Execution loops.
 * **Interactive Playground:** [reasoning_playground.ipynb](reasoning_playground.ipynb)
 
-### 2. ⏳ LAB-06: Structured Outputs: Pydantic v2, Instructor & Schema Enforcement *(Em Desenvolvimento)*
+### 2. 🟢 [LAB-06: Structured Outputs: Pydantic v2, Instructor & Schema Enforcement](lab06.md)
 Pipeline industrial de extração de dados estruturados com validação de esquema em tempo de execução via Pydantic v2, OpenAI Tool Calling/JSON mode, XML tag prompting e loops de auto-correção (*Self-Healing*).
 
-* **Status:** Planejado / Aguardando implementação da Issue [#21](https://github.com/RogerioLS/production-ai-systems/issues/21).
+* **Core concepts:** Pydantic v2 validation, JSON Schema, XML tag delimiters, Self-Healing reflection loops.
+* **Interactive Playground:** [structured_outputs_playground.ipynb](structured_outputs_playground.ipynb)
 
 ### 3. ⏳ LAB-07: Production Application: Financial Asset & Proposal Extractor *(Em Desenvolvimento)*
 Aplicação de nível de produção para extração e análise de balanços corporativos e propostas de crédito bancário com validação contábil determinística (`Ativo == Passivo + PL`).

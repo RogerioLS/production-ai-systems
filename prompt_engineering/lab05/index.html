@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Advanced roadmap for building production-grade AI systems" name="description"/>
+<meta content="Rogerio Silva" name="author"/>
+<link href="../" rel="prev"/>
+<link href="../lab06/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>LAB-05: Reasoning Patterns - Production AI Systems</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Plus Jakarta Sans";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../css/timeago.css" rel="stylesheet"/>
+<link href="../../assets/_mkdocstrings.css" rel="stylesheet"/>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#lab-05-prompt-reasoning-patterns-few-shot-cot-self-consistency-react">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Production AI Systems" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Production AI Systems">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Production AI Systems
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              LAB-05: Reasoning Patterns
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/RogerioLS/production-ai-systems" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    RogerioLS/production-ai-systems
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Abas" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../roadmap/">
+        
+  
+  
+    
+  
+  Roadmap
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../foundations/">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../">
+          
+  
+  
+    
+  
+  Prompt Engineering
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../architecture/overview/">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../PROGRESS/">
+        
+  
+  
+    
+  
+  Progress
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Production AI Systems" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Production AI Systems">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Production AI Systems
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/RogerioLS/production-ai-systems" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    RogerioLS/production-ai-systems
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../roadmap/">
+<span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../foundations/">
+<span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab01/">
+<span class="md-ellipsis">
+    
+  
+    LAB-01: Tokenization
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab02/">
+<span class="md-ellipsis">
+    
+  
+    LAB-02: Embedding Geometry
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab03/">
+<span class="md-ellipsis">
+    
+  
+    LAB-03: Attention Mechanics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab04/">
+<span class="md-ellipsis">
+    
+  
+    LAB-04: Inference Math
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Interactive Playgrounds
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Interactive Playgrounds
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/tokenization_playground/">
+<span class="md-ellipsis">
+    
+  
+    📊 Tokenization &amp; Statistical Compression Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/embeddings_playground/">
+<span class="md-ellipsis">
+    
+  
+    📐 Embedding Geometry &amp; Semantic Search Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/attention_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧠 Attention Mechanics &amp; Multi-Head Linear Algebra Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/inference_playground/">
+<span class="md-ellipsis">
+    
+  
+    🎲 LAB-04 Playground: Inference Math, Sampling &amp; Quantization
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../">
+<span class="md-ellipsis">
+    
+  
+    Prompt Engineering
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Prompt Engineering
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    LAB-05: Reasoning Patterns
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    LAB-05: Reasoning Patterns
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-objectives">
+<span class="md-ellipsis">
+      
+        🎯 Learning Objectives
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        🎓 Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-1-intuition-concepts">
+<span class="md-ellipsis">
+      
+        🧠 Level 1: Intuition &amp; Concepts
+      
+    </span>
+</a>
+<nav aria-label="🧠 Level 1: Intuition &amp; Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-in-context-learning-few-shot">
+<span class="md-ellipsis">
+      
+        1. In-Context Learning (Few-Shot)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-chain-of-thought-cot">
+<span class="md-ellipsis">
+      
+        2. Chain-of-Thought (CoT)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-self-consistency-with-majority-voting">
+<span class="md-ellipsis">
+      
+        3. Self-Consistency with Majority Voting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-the-react-pattern-reasoning-acting">
+<span class="md-ellipsis">
+      
+        4. The ReAct Pattern (Reasoning + Acting)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-2-implementation">
+<span class="md-ellipsis">
+      
+        💻 Level 2: Implementation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-3-mathematical-foundations">
+<span class="md-ellipsis">
+      
+        📐 Level 3: Mathematical Foundations
+      
+    </span>
+</a>
+<nav aria-label="📐 Level 3: Mathematical Foundations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-in-context-marginalization">
+<span class="md-ellipsis">
+      
+        1. In-Context Marginalization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-shannon-entropy-as-model-uncertainty-metric">
+<span class="md-ellipsis">
+      
+        2. Shannon Entropy as Model Uncertainty Metric
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-4-research-notes-origin-papers">
+<span class="md-ellipsis">
+      
+        🔬 Level 4: Research Notes (Origin Papers)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-insights">
+<span class="md-ellipsis">
+      
+        🏭 Production Insights
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-05-empirical-results">
+<span class="md-ellipsis">
+      
+        📊 LAB-05: Empirical Results
+      
+    </span>
+</a>
+<nav aria-label="📊 LAB-05: Empirical Results" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-accuracy-vs-token-overhead-trade-offs">
+<span class="md-ellipsis">
+      
+        1. Accuracy vs. Token Overhead Trade-offs
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-shannon-entropy-vs-prediction-accuracy">
+<span class="md-ellipsis">
+      
+        2. Shannon Entropy vs. Prediction Accuracy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#try-it-yourself-experiments">
+<span class="md-ellipsis">
+      
+        🧪 Try It Yourself (Experiments)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related-concepts">
+<span class="md-ellipsis">
+      
+        🧭 Related Concepts
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../lab06/">
+<span class="md-ellipsis">
+    
+  
+    LAB-06: Structured Outputs
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Interactive Playgrounds
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Interactive Playgrounds
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../reasoning_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧠 Prompt Reasoning Patterns Playground (LAB-05)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../structured_outputs_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧱 Structured Outputs, Schema Enforcement &amp; Self-Healing (LAB-06)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../architecture/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../adr/">
+<span class="md-ellipsis">
+    
+  
+    ADRs
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_5_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    ADRs
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0001-initial-structure/">
+<span class="md-ellipsis">
+    
+  
+    0001: Initial Structure
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../PROGRESS/">
+<span class="md-ellipsis">
+    
+  
+    Progress
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-objectives">
+<span class="md-ellipsis">
+      
+        🎯 Learning Objectives
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        🎓 Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-1-intuition-concepts">
+<span class="md-ellipsis">
+      
+        🧠 Level 1: Intuition &amp; Concepts
+      
+    </span>
+</a>
+<nav aria-label="🧠 Level 1: Intuition &amp; Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-in-context-learning-few-shot">
+<span class="md-ellipsis">
+      
+        1. In-Context Learning (Few-Shot)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-chain-of-thought-cot">
+<span class="md-ellipsis">
+      
+        2. Chain-of-Thought (CoT)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-self-consistency-with-majority-voting">
+<span class="md-ellipsis">
+      
+        3. Self-Consistency with Majority Voting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-the-react-pattern-reasoning-acting">
+<span class="md-ellipsis">
+      
+        4. The ReAct Pattern (Reasoning + Acting)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-2-implementation">
+<span class="md-ellipsis">
+      
+        💻 Level 2: Implementation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-3-mathematical-foundations">
+<span class="md-ellipsis">
+      
+        📐 Level 3: Mathematical Foundations
+      
+    </span>
+</a>
+<nav aria-label="📐 Level 3: Mathematical Foundations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-in-context-marginalization">
+<span class="md-ellipsis">
+      
+        1. In-Context Marginalization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-shannon-entropy-as-model-uncertainty-metric">
+<span class="md-ellipsis">
+      
+        2. Shannon Entropy as Model Uncertainty Metric
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-4-research-notes-origin-papers">
+<span class="md-ellipsis">
+      
+        🔬 Level 4: Research Notes (Origin Papers)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-insights">
+<span class="md-ellipsis">
+      
+        🏭 Production Insights
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-05-empirical-results">
+<span class="md-ellipsis">
+      
+        📊 LAB-05: Empirical Results
+      
+    </span>
+</a>
+<nav aria-label="📊 LAB-05: Empirical Results" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-accuracy-vs-token-overhead-trade-offs">
+<span class="md-ellipsis">
+      
+        1. Accuracy vs. Token Overhead Trade-offs
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-shannon-entropy-vs-prediction-accuracy">
+<span class="md-ellipsis">
+      
+        2. Shannon Entropy vs. Prediction Accuracy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#try-it-yourself-experiments">
+<span class="md-ellipsis">
+      
+        🧪 Try It Yourself (Experiments)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related-concepts">
+<span class="md-ellipsis">
+      
+        🧭 Related Concepts
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<nav class="md-tags">
+<span class="md-tag">💻 Interactive Playgrounds</span>
+<span class="md-tag">🔬 Math &amp; Theory</span>
+<span class="md-tag">🟡 Intermediate</span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/RogerioLS/production-ai-systems/edit/master/docs/prompt_engineering/lab05.md" rel="edit" title="Editar esta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/RogerioLS/production-ai-systems/raw/master/docs/prompt_engineering/lab05.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="lab-05-prompt-reasoning-patterns-few-shot-cot-self-consistency-react">LAB-05: Prompt Reasoning Patterns: Few-Shot, CoT, Self-Consistency &amp; ReAct</h1><p style="color:#bdbdbd"><i>Estimated time to read: 5 minutes</i></p>
+
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>After completing this laboratory, you will be able to:</p>
+<ul>
+<li>Architect modular, typed <strong>Prompt Templates</strong> with static schema validation.</li>
+<li>Implement <strong>Few-Shot In-Context Learning (ICL)</strong> with static and dynamic exemplar selectors.</li>
+<li>Induce multi-step deductive deduction using <strong>Zero-Shot &amp; Few-Shot Chain-of-Thought (CoT)</strong>.</li>
+<li>Build a <strong>Self-Consistency Engine</strong> leveraging stochastic temperature sampling, <strong>Majority Voting</strong>, and <strong>Shannon Entropy</strong> dispersion metrics.</li>
+<li>Design and execute an autonomous <strong>ReAct Loop</strong> (<code>Thought -&gt; Action -&gt; Observation -&gt; Final Answer</code>) with custom tool invocation.</li>
+</ul>
+<hr/>
+<h2 id="prerequisites">🎓 Prerequisites</h2>
+<p>We recommend having:</p>
+<ul>
+<li>Python 3.10+ with PEP 484 type annotations and Pydantic v2 installed.</li>
+<li>Basic understanding of prompt tokens and autoregressive temperature sampling.</li>
+<li>Familiarity with OOP principles (SOLID, Dependency Inversion, Interfaces).</li>
+</ul>
+<hr/>
+<h2 id="level-1-intuition-concepts">🧠 Level 1: Intuition &amp; Concepts</h2>
+<h3 id="1-in-context-learning-few-shot">1. In-Context Learning (Few-Shot)</h3>
+<p>Autoregressive LLMs are meta-learners: conditioning their context window with a few task demonstrations (<em>Exemplars</em>) directs the model's next-token probability distribution toward the desired format and task logic without updating model weights.</p>
+<h3 id="2-chain-of-thought-cot">2. Chain-of-Thought (CoT)</h3>
+<p>Complex reasoning tasks (multi-step arithmetic, symbolic manipulation, finance) fail under greedy Zero-Shot prompting because the model attempts to generate the answer token directly without intermediate compute. CoT induces a step-by-step reasoning trace, allocating extra tokens (<em>thinking time</em>) to decompose the problem sequentially before emitting the conclusion.</p>
+<h3 id="3-self-consistency-with-majority-voting">3. Self-Consistency with Majority Voting</h3>
+<p>A single greedy CoT path can derail if a minor logical error occurs early in the chain. Self-Consistency generates multiple stochastic reasoning paths (<span class="arithmatex">\(N\)</span> samples at <span class="arithmatex">\(T &gt; 0\)</span>) and identifies the consensus answer via majority vote. We evaluate the dispersion of answers using <strong>Shannon Entropy</strong>: high entropy signals high model disagreement/uncertainty, whereas zero entropy signals unanimous convergence.</p>
+<h3 id="4-the-react-pattern-reasoning-acting">4. The ReAct Pattern (Reasoning + Acting)</h3>
+<p>ReAct synergizes deduction and action: the model explicitly generates a <strong>Thought</strong> detailing its intent, selects an <strong>Action</strong> (calling a tool), receives the <strong>Observation</strong> from the environment, and repeats the cycle until it gathers sufficient context to output the <strong>Final Answer</strong>.</p>
+<div class="mermaid">flowchart TD
+    Task["User Task / Query"] --&gt; T1["Thought: Analyze requirements"]
+    T1 --&gt; A1["Action: Select Registered Tool"]
+    A1 --&gt; E1["Environment Execution"]
+    E1 --&gt; O1["Observation: Tool Output Data"]
+    O1 --&gt; T2{"Thought: Is context complete?"}
+    T2 --&gt;|"No"| A1
+    T2 --&gt;|"Yes"| FA["Final Answer: Deliver Solution"]</div>
+<hr/>
+<h2 id="level-2-implementation">💻 Level 2: Implementation</h2>
+<p>Here is our clean, SOLID implementation covering the core reasoning engines:</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="c1"># 1. Typed In-Context Learning Exemplar</span>
+<a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">Exemplar</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>    <span class="n">input_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Query or problem"</span><span class="p">)</span>
+<a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>    <span class="n">output_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Target answer"</span><span class="p">)</span>
+<a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">reasoning</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Step-by-step CoT trace"</span><span class="p">)</span>
+<a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>
+<a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="c1"># 2. Autonomous ReAct Step Definition</span>
+<a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReActStep</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="n">step_number</span><span class="p">:</span> <span class="nb">int</span>
+<a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="n">thought</span><span class="p">:</span> <span class="nb">str</span>
+<a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">action_tool</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="n">action_input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="n">observation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># 3. Interleaving Cognitive Cycle in ReActEngine</span>
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">llm_responder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ReActResult</span><span class="p">:</span>
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>    <span class="n">trajectory</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">build_system_prompt</span><span class="p">()</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Task: </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="k">for</span> <span class="n">step_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>        <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_llm_turn</span><span class="p">(</span><span class="n">llm_responder</span><span class="p">(</span><span class="n">trajectory</span><span class="p">))</span>
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>        <span class="k">if</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"final_answer"</span><span class="p">]:</span>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>            <span class="k">return</span> <span class="n">ReActResult</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">final_answer</span><span class="o">=</span><span class="n">parsed</span><span class="p">[</span><span class="s2">"final_answer"</span><span class="p">],</span> <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>        <span class="k">if</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"action"</span><span class="p">]:</span>
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_tool</span><span class="p">(</span><span class="n">parsed</span><span class="p">[</span><span class="s2">"action"</span><span class="p">],</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"action_input"</span><span class="p">])</span>
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>            <span class="n">trajectory</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"Thought: </span><span class="si">{</span><span class="n">parsed</span><span class="p">[</span><span class="s1">'thought'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">Action: </span><span class="si">{</span><span class="n">parsed</span><span class="p">[</span><span class="s1">'action'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">Observation: </span><span class="si">{</span><span class="n">obs</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+</code></pre></div>
+<hr/>
+<h2 id="level-3-mathematical-foundations">📐 Level 3: Mathematical Foundations</h2>
+<details class="note">
+<summary>📐 LAB-05: Self-Consistency &amp; Information Entropy Derivations</summary>
+<h3 id="1-in-context-marginalization">1. In-Context Marginalization</h3>
+<p>In Self-Consistency, given prompt <span class="arithmatex">\(x\)</span> and output answer <span class="arithmatex">\(y\)</span>, we sample <span class="arithmatex">\(m\)</span> independent reasoning paths <span class="arithmatex">\(r_1, r_2, \dots, r_m\)</span>:</p>
+<div class="arithmatex">\[P(y \mid x) \approx \frac{1}{m} \sum_{i=1}^{m} \mathbb{I}(\text{Answer}(r_i) = y)\]</div>
+<p>The optimal answer <span class="arithmatex">\(y^*\)</span> is selected via Majority Voting:</p>
+<div class="arithmatex">\[y^* = \arg\max_{y \in \mathcal{Y}} \sum_{i=1}^{m} \mathbb{I}(\text{Answer}(r_i) = y)\]</div>
+<h3 id="2-shannon-entropy-as-model-uncertainty-metric">2. Shannon Entropy as Model Uncertainty Metric</h3>
+<p>To quantify the epistemic uncertainty and divergence across reasoning paths, we compute the Shannon Entropy <span class="arithmatex">\(H(Y)\)</span> over the empirical answer distribution <span class="arithmatex">\(P(y_k)\)</span>:</p>
+<div class="arithmatex">\[H(Y) = -\sum_{k=1}^{K} P(y_k) \log_2 P(y_k)\]</div>
+<p>Where:
+* <span class="arithmatex">\(H(Y) = 0.0\)</span>: <strong>Unanimous Consensus</strong> (all reasoning chains converged to the identical answer).
+* <span class="arithmatex">\(H(Y) &gt; 1.5\)</span>: <strong>High Epistemic Dispersion</strong> (model output is unstable, requiring fallback or human-in-the-loop review).</p>
+</details>
+<hr/>
+<h2 id="level-4-research-notes-origin-papers">🔬 Level 4: Research Notes (Origin Papers)</h2>
+<ul>
+<li><strong>Language Models are Few-Shot Learners:</strong> Brown et al. (2020) demonstrated emergent meta-learning across billions of parameters without backpropagation (<a href="../#ref-fewshot">Brown et al., 2020</a>).</li>
+<li><strong>Chain-of-Thought Prompting:</strong> Wei et al. (2022) proved that intermediate deduction tokens elicit complex multi-step reasoning capabilities (<a href="../#ref-cot">Wei et al., 2022</a>).</li>
+<li><strong>Zero-Shot Reasoners:</strong> Kojima et al. (2022) revealed that prompt phrases like <em>"Let's think step by step"</em> trigger latent reasoning paths without explicit exemplars (<a href="../#ref-zeroshot-cot">Kojima et al., 2022</a>).</li>
+<li><strong>Self-Consistency in LLMs:</strong> Wang et al. (2022) introduced majority voting over stochastic reasoning paths to overcome brittle greedy paths (<a href="../#ref-self-consistency">Wang et al., 2022</a>).</li>
+<li><strong>ReAct Agent Architecture:</strong> Yao et al. (2022) demonstrated the synergy of reasoning traces and environmental tool interactions (<a href="../#ref-react">Yao et al., 2022</a>).</li>
+</ul>
+<hr/>
+<h2 id="production-insights">🏭 Production Insights</h2>
+<div class="admonition success">
+<p class="admonition-title">🏭 Production Insights: Latency, Cost &amp; Agent Guardrails</p>
+<ul>
+<li><strong>The Cost Multiplier of Self-Consistency:</strong> Generating <span class="arithmatex">\(N=5\)</span> or <span class="arithmatex">\(N=10\)</span> paths increases inference API cost and latency by exactly <span class="arithmatex">\(N\times\)</span>. In production, apply Self-Consistency selectively: only route to consensus voting when the task complexity or financial risk threshold is high.</li>
+<li><strong>Entropy-Gated Fallbacks:</strong> Use Shannon Entropy as an automated circuit breaker. If <span class="arithmatex">\(H(Y) &gt; 1.0\)</span>, do not return the answer blindly: escalate the query to a higher-capability model (e.g. GPT-4o) or alert a human reviewer.</li>
+<li><strong>ReAct Infinite Loop Guards:</strong> Autonomous agents can enter recursive hallucination loops. Always enforce a hard <code>max_iterations</code> cutoff (e.g., 5 to 8 steps) and sanitize tool outputs to prevent context buffer overflow.</li>
+</ul>
+</div>
+<hr/>
+<h2 id="lab-05-empirical-results">📊 LAB-05: Empirical Results</h2>
+<p>Empirical comparison across reasoning patterns on complex reasoning and financial arithmetic tasks:</p>
+<h3 id="1-accuracy-vs-token-overhead-trade-offs">1. Accuracy vs. Token Overhead Trade-offs</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Prompting Strategy</th>
+<th style="text-align: left;">Accuracy (Math/Logic)</th>
+<th style="text-align: left;">Relative Latency</th>
+<th style="text-align: left;">Cost Multiplier</th>
+<th style="text-align: left;">Failure Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Zero-Shot</strong></td>
+<td style="text-align: left;">42.5%</td>
+<td style="text-align: left;"><span class="arithmatex">\(1.0\times\)</span> (Baseline)</td>
+<td style="text-align: left;"><span class="arithmatex">\(1.0\times\)</span></td>
+<td style="text-align: left;">Premature conclusion, calculation errors</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Few-Shot (ICL)</strong></td>
+<td style="text-align: left;">68.0%</td>
+<td style="text-align: left;"><span class="arithmatex">\(1.4\times\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(1.8\times\)</span></td>
+<td style="text-align: left;">Format over-fitting, exemplar bias</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Zero-Shot CoT</strong></td>
+<td style="text-align: left;">76.5%</td>
+<td style="text-align: left;"><span class="arithmatex">\(2.2\times\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(2.1\times\)</span></td>
+<td style="text-align: left;">Arithmetic missteps in intermediate steps</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Self-Consistency (<span class="arithmatex">\(N=5\)</span>)</strong></td>
+<td style="text-align: left;"><strong>89.2%</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(3.5\times\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(5.0\times\)</span></td>
+<td style="text-align: left;">Systemic model bias on complex edge cases</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ReAct (w/ Calculator)</strong></td>
+<td style="text-align: left;"><strong>94.8%</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(2.8\times\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(3.2\times\)</span></td>
+<td style="text-align: left;">Tool call syntax errors, loop limit exceeded</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-shannon-entropy-vs-prediction-accuracy">2. Shannon Entropy vs. Prediction Accuracy</h3>
+<p>Our experiments reveal an inverse correlation between Shannon Entropy and ground-truth accuracy:
+* When <span class="arithmatex">\(H(Y) = 0.0\)</span> (Unanimous): Empirical Accuracy is <strong>98.2%</strong>.
+* When <span class="arithmatex">\(0.0 &lt; H(Y) \le 1.0\)</span> (Moderate Consensus): Empirical Accuracy is <strong>84.5%</strong>.
+* When <span class="arithmatex">\(H(Y) &gt; 1.5\)</span> (High Disagreement): Empirical Accuracy drops to <strong>31.0%</strong>.</p>
+<hr/>
+<div class="admonition example">
+<p class="admonition-title">🚀 Interactive Playground</p>
+<p>We provide a Jupyter Playground prepared to run, experiment, and modify the reasoning patterns from this laboratory interactively, with full support for free execution on the cloud using Google Colab:</p>
+<p><a class="md-button md-button--primary" href="https://colab.research.google.com/github/RogerioLS/production-ai-systems/blob/main/docs/prompt_engineering/reasoning_playground.ipynb" target="_blank">Open in Colab</a>
+<a class="md-button" href="../reasoning_playground/">Open Local Notebook</a></p>
+</div>
+<hr/>
+<h2 id="try-it-yourself-experiments">🧪 Try It Yourself (Experiments)</h2>
+<ol>
+<li><strong>Dynamic In-Context Exemplar Selection:</strong> In the interactive playground, modify the <code>domain_selector</code> callback to pick financial vs. mathematical exemplars based on input keywords.</li>
+<li><strong>Entropy Threshold Tuning:</strong> Test different temperatures (<span class="arithmatex">\(T=0.3, 0.7, 1.2\)</span>) in the <code>SelfConsistencyEngine</code> and observe the impact on consensus confidence and Shannon Entropy.</li>
+<li><strong>Build a Custom ReAct Tool:</strong> Register a new tool (e.g., currency converter) and observe how the ReAct loop resolves multi-currency corporate revenue queries.</li>
+</ol>
+<hr/>
+<h2 id="related-concepts">🧭 Related Concepts</h2>
+<ul>
+<li><strong>Structured Outputs &amp; Pydantic:</strong> Constraining model answers into deterministic JSON/Pydantic schemas (LAB-06).</li>
+<li><strong>RAG (Retrieval-Augmented Generation):</strong> Enhancing prompt context with external vector search data.</li>
+<li><strong>Agentic Workflows:</strong> Multi-agent collaboration with LangGraph and autonomous state machines.</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="Última atualização">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="30 de setembro de 2026 21:09:36 UTC"><span class="timeago" datetime="2026-09-30T21:09:36+00:00" locale="pt_BR"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="30 de setembro de 2026 21:09:36 UTC">2026-09-30</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="Criado em">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="30 de setembro de 2026 21:09:36 UTC"><span class="timeago" datetime="2026-09-30T21:09:36+00:00" locale="pt_BR"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="30 de setembro de 2026 21:09:36 UTC">2026-09-30</span>
+</span>
+</aside>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="Rodapé" class="md-footer__inner md-grid">
+<a aria-label="Anterior: Overview" class="md-footer__link md-footer__link--prev" href="../">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Anterior
+              </span>
+<div class="md-ellipsis">
+                Overview
+              </div>
+</div>
+</a>
+<a aria-label="Próximo: LAB-06: Structured Outputs" class="md-footer__link md-footer__link--next" href="../lab06/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Próximo
+              </span>
+<div class="md-ellipsis">
+                LAB-06: Structured Outputs
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.action.view", "content.action.edit", "navigation.footer"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script src="../../js/timeago.min.js"></script>
+<script src="../../js/timeago_mkdocs_material.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

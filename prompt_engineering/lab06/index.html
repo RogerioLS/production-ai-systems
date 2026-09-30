@@ -1,0 +1,1334 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Advanced roadmap for building production-grade AI systems" name="description"/>
+<meta content="Rogerio Silva" name="author"/>
+<link href="../lab05/" rel="prev"/>
+<link href="../reasoning_playground/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>LAB-06: Structured Outputs - Production AI Systems</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Plus Jakarta Sans";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../css/timeago.css" rel="stylesheet"/>
+<link href="../../assets/_mkdocstrings.css" rel="stylesheet"/>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#lab-06-structured-outputs-pydantic-v2-instructor-schema-enforcement">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Production AI Systems" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Production AI Systems">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Production AI Systems
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              LAB-06: Structured Outputs
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/RogerioLS/production-ai-systems" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    RogerioLS/production-ai-systems
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Abas" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../roadmap/">
+        
+  
+  
+    
+  
+  Roadmap
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../foundations/">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../">
+          
+  
+  
+    
+  
+  Prompt Engineering
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../architecture/overview/">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../PROGRESS/">
+        
+  
+  
+    
+  
+  Progress
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Production AI Systems" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Production AI Systems">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Production AI Systems
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/RogerioLS/production-ai-systems" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    RogerioLS/production-ai-systems
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../roadmap/">
+<span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../foundations/">
+<span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab01/">
+<span class="md-ellipsis">
+    
+  
+    LAB-01: Tokenization
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab02/">
+<span class="md-ellipsis">
+    
+  
+    LAB-02: Embedding Geometry
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab03/">
+<span class="md-ellipsis">
+    
+  
+    LAB-03: Attention Mechanics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/lab04/">
+<span class="md-ellipsis">
+    
+  
+    LAB-04: Inference Math
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Interactive Playgrounds
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Interactive Playgrounds
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/tokenization_playground/">
+<span class="md-ellipsis">
+    
+  
+    📊 Tokenization &amp; Statistical Compression Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/embeddings_playground/">
+<span class="md-ellipsis">
+    
+  
+    📐 Embedding Geometry &amp; Semantic Search Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/attention_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧠 Attention Mechanics &amp; Multi-Head Linear Algebra Playground
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../foundations/inference_playground/">
+<span class="md-ellipsis">
+    
+  
+    🎲 LAB-04 Playground: Inference Math, Sampling &amp; Quantization
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../">
+<span class="md-ellipsis">
+    
+  
+    Prompt Engineering
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Prompt Engineering
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../lab05/">
+<span class="md-ellipsis">
+    
+  
+    LAB-05: Reasoning Patterns
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    LAB-06: Structured Outputs
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    LAB-06: Structured Outputs
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-objectives">
+<span class="md-ellipsis">
+      
+        🎯 Learning Objectives
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        🎓 Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-1-intuition-concepts">
+<span class="md-ellipsis">
+      
+        🧠 Level 1: Intuition &amp; Concepts
+      
+    </span>
+</a>
+<nav aria-label="🧠 Level 1: Intuition &amp; Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-the-challenge-of-unstructured-outputs-in-enterprise-ai">
+<span class="md-ellipsis">
+      
+        1. The Challenge of Unstructured Outputs in Enterprise AI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-pydantic-v2-runtime-validation">
+<span class="md-ellipsis">
+      
+        2. Pydantic v2 Runtime Validation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-the-extraction-strategy-spectrum">
+<span class="md-ellipsis">
+      
+        3. The Extraction Strategy Spectrum
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-2-implementation">
+<span class="md-ellipsis">
+      
+        💻 Level 2: Implementation
+      
+    </span>
+</a>
+<nav aria-label="💻 Level 2: Implementation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-financial-contract-domain-schema-schemaspy">
+<span class="md-ellipsis">
+      
+        1. Financial Contract Domain Schema (schemas.py)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-resilient-json-xml-parsers-parserspy">
+<span class="md-ellipsis">
+      
+        2. Resilient JSON &amp; XML Parsers (parsers.py)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-self-healing-reflection-engine-extractorpy">
+<span class="md-ellipsis">
+      
+        3. Self-Healing Reflection Engine (extractor.py)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#math-foundations">
+<span class="md-ellipsis">
+      
+        🔬 Math &amp; Foundations
+      
+    </span>
+</a>
+<nav aria-label="🔬 Math &amp; Foundations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-formal-language-grammars-constrained-decoding">
+<span class="md-ellipsis">
+      
+        1. Formal Language Grammars &amp; Constrained Decoding
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-multi-turn-error-convergence">
+<span class="md-ellipsis">
+      
+        2. Multi-Turn Error Convergence
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-insights">
+<span class="md-ellipsis">
+      
+        🏭 Production Insights
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-06-empirical-results">
+<span class="md-ellipsis">
+      
+        📊 LAB-06: Empirical Results
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#try-it-yourself-experiments">
+<span class="md-ellipsis">
+      
+        🧪 Try It Yourself (Experiments)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related-concepts">
+<span class="md-ellipsis">
+      
+        🧭 Related Concepts
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Interactive Playgrounds
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Interactive Playgrounds
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../reasoning_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧠 Prompt Reasoning Patterns Playground (LAB-05)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../structured_outputs_playground/">
+<span class="md-ellipsis">
+    
+  
+    🧱 Structured Outputs, Schema Enforcement &amp; Self-Healing (LAB-06)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../architecture/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../adr/">
+<span class="md-ellipsis">
+    
+  
+    ADRs
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_5_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    ADRs
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0001-initial-structure/">
+<span class="md-ellipsis">
+    
+  
+    0001: Initial Structure
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../PROGRESS/">
+<span class="md-ellipsis">
+    
+  
+    Progress
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-objectives">
+<span class="md-ellipsis">
+      
+        🎯 Learning Objectives
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        🎓 Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-1-intuition-concepts">
+<span class="md-ellipsis">
+      
+        🧠 Level 1: Intuition &amp; Concepts
+      
+    </span>
+</a>
+<nav aria-label="🧠 Level 1: Intuition &amp; Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-the-challenge-of-unstructured-outputs-in-enterprise-ai">
+<span class="md-ellipsis">
+      
+        1. The Challenge of Unstructured Outputs in Enterprise AI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-pydantic-v2-runtime-validation">
+<span class="md-ellipsis">
+      
+        2. Pydantic v2 Runtime Validation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-the-extraction-strategy-spectrum">
+<span class="md-ellipsis">
+      
+        3. The Extraction Strategy Spectrum
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#level-2-implementation">
+<span class="md-ellipsis">
+      
+        💻 Level 2: Implementation
+      
+    </span>
+</a>
+<nav aria-label="💻 Level 2: Implementation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-financial-contract-domain-schema-schemaspy">
+<span class="md-ellipsis">
+      
+        1. Financial Contract Domain Schema (schemas.py)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-resilient-json-xml-parsers-parserspy">
+<span class="md-ellipsis">
+      
+        2. Resilient JSON &amp; XML Parsers (parsers.py)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-self-healing-reflection-engine-extractorpy">
+<span class="md-ellipsis">
+      
+        3. Self-Healing Reflection Engine (extractor.py)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#math-foundations">
+<span class="md-ellipsis">
+      
+        🔬 Math &amp; Foundations
+      
+    </span>
+</a>
+<nav aria-label="🔬 Math &amp; Foundations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-formal-language-grammars-constrained-decoding">
+<span class="md-ellipsis">
+      
+        1. Formal Language Grammars &amp; Constrained Decoding
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-multi-turn-error-convergence">
+<span class="md-ellipsis">
+      
+        2. Multi-Turn Error Convergence
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#production-insights">
+<span class="md-ellipsis">
+      
+        🏭 Production Insights
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-06-empirical-results">
+<span class="md-ellipsis">
+      
+        📊 LAB-06: Empirical Results
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#try-it-yourself-experiments">
+<span class="md-ellipsis">
+      
+        🧪 Try It Yourself (Experiments)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related-concepts">
+<span class="md-ellipsis">
+      
+        🧭 Related Concepts
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<nav class="md-tags">
+<span class="md-tag">💻 Interactive Playgrounds</span>
+<span class="md-tag">🔬 Math &amp; Theory</span>
+<span class="md-tag">🟡 Intermediate</span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/RogerioLS/production-ai-systems/edit/master/docs/prompt_engineering/lab06.md" rel="edit" title="Editar esta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/RogerioLS/production-ai-systems/raw/master/docs/prompt_engineering/lab06.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="lab-06-structured-outputs-pydantic-v2-instructor-schema-enforcement">LAB-06: Structured Outputs: Pydantic v2, Instructor &amp; Schema Enforcement</h1><p style="color:#bdbdbd"><i>Estimated time to read: 6 minutes</i></p>
+
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>After completing this laboratory, you will be able to:</p>
+<ul>
+<li>Architect production-grade <strong>Pydantic v2 domain schemas</strong> with nested types, <code>@field_validator</code>, and cross-field invariant <code>@model_validator</code>.</li>
+<li>Implement <strong>resilient parsing heuristics</strong> capable of stripping conversational preambles, markdown code fences, and repairing trailing commas.</li>
+<li>Configure alternative output modalities, including <strong>XML Tag Delimited Prompting</strong> for models with high tag affinity.</li>
+<li>Construct an autonomous <strong>Self-Healing / Reflection error recovery loop</strong> that re-injects validation tracebacks into follow-up LLM turns for deterministic error repair.</li>
+<li>Interface with <strong>Instructor &amp; OpenAI Tool Calling</strong> for native schema enforcement.</li>
+<li>Benchmark and evaluate extraction reliability, syntax error rates, and latency overhead across strategies.</li>
+</ul>
+<hr/>
+<h2 id="prerequisites">🎓 Prerequisites</h2>
+<p>We recommend having:</p>
+<ul>
+<li>Python 3.10+ with strict type annotations and Pydantic v2 (<code>pip install pydantic&gt;=2.0</code>).</li>
+<li>Understanding of JSON Schema specifications and Prompt Engineering principles.</li>
+<li>Familiarity with OOP principles (SOLID, Exception Handling, Interfaces).</li>
+</ul>
+<hr/>
+<h2 id="level-1-intuition-concepts">🧠 Level 1: Intuition &amp; Concepts</h2>
+<h3 id="1-the-challenge-of-unstructured-outputs-in-enterprise-ai">1. The Challenge of Unstructured Outputs in Enterprise AI</h3>
+<p>Large Language Models are probabilistic next-token predictors. When asked to generate machine-readable data (JSON, XML, YAML) without structural constraints, models suffer from:
+* <strong>Conversational Preambles:</strong> Emitting phrases like <em>"Sure, here is your JSON:"</em> before the payload.
+* <strong>Syntax Breakages:</strong> Unescaped quotation marks, markdown code fences (<code>```json</code>), and trailing commas (<code>{"a": 1,}</code>).
+* <strong>Schema Hallucinations:</strong> Missing required keys, hallucinated extra fields, or unexpected data types (e.g. string dates instead of ISO format, strings instead of floats).</p>
+<p>In production AI systems, downstream systems (SQL databases, financial ledgers, transactional APIs) require <strong>deterministic 100% schema compliance</strong>.</p>
+<h3 id="2-pydantic-v2-runtime-validation">2. Pydantic v2 Runtime Validation</h3>
+<p>Pydantic v2 compiled with <code>pydantic-core</code> (Rust backend) provides ultra-fast runtime data validation. By modeling extraction schemas with <code>BaseModel</code>, <code>Field(..., description=...)</code>, and custom validators, we establish a strict contract that guarantees any instantiated object is guaranteed to be clean, typed, and mathematically valid.</p>
+<h3 id="3-the-extraction-strategy-spectrum">3. The Extraction Strategy Spectrum</h3>
+<p>Enterprise architectures choose between four primary extraction modalities:</p>
+<div class="mermaid">flowchart LR
+    A["Raw JSON Prompting"] --&gt;|"Low Latency, High Failure"| S["Spectrum"]
+    B["XML Delimited Tags"] --&gt;|"Resilient in Claude/Llama"| S
+    C["JSON Schema Strict"] --&gt;|"Grammar Guided / Constrained"| S
+    D["Self-Healing Reflection"] --&gt;|"Multi-Turn Autonomous Repair"| S</div>
+<ol>
+<li><strong>Raw JSON Prompting:</strong> High syntax failure rate; sensitive to prompt wording.</li>
+<li><strong>XML Tag Prompting:</strong> Models have lower hallucination rates when closing tags (<code>&lt;party&gt;...&lt;/party&gt;</code>) than matching braces and commas.</li>
+<li><strong>JSON Schema Injection:</strong> System prompt embeds the exact JSON Schema derived from <code>model.model_json_schema()</code>.</li>
+<li><strong>Self-Healing Reflection Loop:</strong> When validation fails, the system captures the traceback and feeds it back to the LLM in an automated reflection turn.</li>
+</ol>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    actor App as Client Application
+    participant Engine as StructuredOutputExtractor
+    participant Parser as RobustJSON / XML Parser
+    participant Model as Pydantic v2 Validator
+    participant LLM as Language Model
+
+    App-&gt;&gt;Engine: extract(document_text)
+    Engine-&gt;&gt;LLM: Turn 1: System (JSON Schema) + User (Text)
+    LLM--&gt;&gt;Engine: Raw Output (e.g. Missing required key)
+    Engine-&gt;&gt;Parser: parse(raw_output)
+    Parser--&gt;&gt;Engine: Parsed Dict
+    Engine-&gt;&gt;Model: model_validate(dict)
+    Model--&gt;&gt;Engine: ❌ ValidationError ("Field required: contract_id")
+    Note over Engine,LLM: Self-Healing Reflection Loop Triggered
+    Engine-&gt;&gt;LLM: Turn 2: Re-inject failed output + ValidationError trace
+    LLM--&gt;&gt;Engine: Corrected Raw Output
+    Engine-&gt;&gt;Parser: parse(corrected_output)
+    Parser--&gt;&gt;Engine: Clean Dict
+    Engine-&gt;&gt;Model: model_validate(dict)
+    Model--&gt;&gt;Engine: ✔ Validation Success!
+    Engine--&gt;&gt;App: ExtractionResult(is_success=True, attempts=2)</div>
+<hr/>
+<h2 id="level-2-implementation">💻 Level 2: Implementation</h2>
+<p>The complete production implementation is located under <code>projects/b_prompt_engineering/src/lab_06_structured_outputs/</code>.</p>
+<h3 id="1-financial-contract-domain-schema-schemaspy">1. Financial Contract Domain Schema (<code>schemas.py</code>)</h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
+<a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>
+<a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>
+<a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">CurrencyCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">BRL</span> <span class="o">=</span> <span class="s2">"BRL"</span>
+<a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>    <span class="n">USD</span> <span class="o">=</span> <span class="s2">"USD"</span>
+<a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a>    <span class="n">EUR</span> <span class="o">=</span> <span class="s2">"EUR"</span>
+<a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a>
+<a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>
+<a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">ContractParty</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
+<a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Legal entity name"</span><span class="p">)</span>
+<a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="n">tax_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Official tax ID (CNPJ, EIN)"</span><span class="p">)</span>
+<a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="n">role</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Role in agreement"</span><span class="p">)</span>
+<a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a>
+<a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a>
+<a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">class</span><span class="w"> </span><span class="nc">FinancialContract</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a href="#__codelineno-0-21" id="__codelineno-0-21" name="__codelineno-0-21"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
+<a href="#__codelineno-0-22" id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">contract_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<a href="#__codelineno-0-23" id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<a href="#__codelineno-0-24" id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">parties</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ContractParty</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a href="#__codelineno-0-25" id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="n">total_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<a href="#__codelineno-0-26" id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="n">currency</span><span class="p">:</span> <span class="n">CurrencyCode</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">CurrencyCode</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
+<a href="#__codelineno-0-27" id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">effective_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"ISO YYYY-MM-DD"</span><span class="p">)</span>
+<a href="#__codelineno-0-28" id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="n">expiration_date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<a href="#__codelineno-0-29" id="__codelineno-0-29" name="__codelineno-0-29"></a>
+<a href="#__codelineno-0-30" id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<a href="#__codelineno-0-31" id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_date_chronology</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"FinancialContract"</span><span class="p">:</span>
+<a href="#__codelineno-0-32" id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_date</span><span class="p">:</span>
+<a href="#__codelineno-0-33" id="__codelineno-0-33" name="__codelineno-0-33"></a>            <span class="n">eff</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_date</span><span class="p">,</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+<a href="#__codelineno-0-34" id="__codelineno-0-34" name="__codelineno-0-34"></a>            <span class="n">exp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expiration_date</span><span class="p">,</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+<a href="#__codelineno-0-35" id="__codelineno-0-35" name="__codelineno-0-35"></a>            <span class="k">if</span> <span class="n">exp</span> <span class="o">&lt;</span> <span class="n">eff</span><span class="p">:</span>
+<a href="#__codelineno-0-36" id="__codelineno-0-36" name="__codelineno-0-36"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Expiration date cannot be earlier than effective date."</span><span class="p">)</span>
+<a href="#__codelineno-0-37" id="__codelineno-0-37" name="__codelineno-0-37"></a>        <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+<h3 id="2-resilient-json-xml-parsers-parserspy">2. Resilient JSON &amp; XML Parsers (<code>parsers.py</code>)</h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">RobustJSONParser</span><span class="p">:</span>
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>    <span class="nd">@staticmethod</span>
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">fix_trailing_commas</span><span class="p">(</span><span class="n">json_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">",\s*([\]}])"</span><span class="p">,</span> <span class="sa">r</span><span class="s2">"\1"</span><span class="p">,</span> <span class="n">json_str</span><span class="p">)</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>    <span class="nd">@classmethod</span>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">raw_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>        <span class="n">cleaned</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">strip_markdown_fences</span><span class="p">(</span><span class="n">raw_text</span><span class="p">)</span>
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>        <span class="c1"># Pass 1: Direct JSON parse</span>
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>        <span class="c1"># Pass 2: Trailing comma repair</span>
+<a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>        <span class="c1"># Pass 3: Extract balanced JSON block</span>
+<a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>        <span class="o">...</span>
+</code></pre></div>
+<h3 id="3-self-healing-reflection-engine-extractorpy">3. Self-Healing Reflection Engine (<code>extractor.py</code>)</h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">StructuredOutputExtractor</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExtractionResult</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+<a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>            <span class="k">try</span><span class="p">:</span>
+<a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>                <span class="n">raw_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_llm</span><span class="p">(</span><span class="n">current_messages</span><span class="p">)</span>
+<a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>                <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">raw_output</span><span class="p">)</span>
+<a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span>
+<a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>                <span class="k">return</span> <span class="n">ExtractionResult</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">attempts</span><span class="o">=</span><span class="n">attempt</span><span class="p">,</span> <span class="n">is_success</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>            <span class="k">except</span> <span class="p">(</span><span class="n">SyntaxParseError</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>                <span class="n">current_messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_builder</span><span class="o">.</span><span class="n">build_repair_messages</span><span class="p">(</span>
+<a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>                    <span class="n">original_prompt</span><span class="o">=</span><span class="n">user_prompt</span><span class="p">,</span>
+<a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>                    <span class="n">failed_raw_output</span><span class="o">=</span><span class="n">raw_output</span><span class="p">,</span>
+<a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a>                    <span class="n">error_details</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">),</span>
+<a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a>                    <span class="n">attempt</span><span class="o">=</span><span class="n">attempt</span><span class="p">,</span>
+<a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a>                    <span class="n">model_cls</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_model</span><span class="p">,</span>
+<a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a>                <span class="p">)</span>
+</code></pre></div>
+<hr/>
+<h2 id="math-foundations">🔬 Math &amp; Foundations</h2>
+<h3 id="1-formal-language-grammars-constrained-decoding">1. Formal Language Grammars &amp; Constrained Decoding</h3>
+<p>Structured generation fundamentally transforms unrestricted autoregressive token generation:
+$<span class="arithmatex">\(P(y_t \mid y_{&lt;t}, x) = \text{softmax}(W h_t)\)</span>$</p>
+<p>Into constrained sampling over a context-free grammar (CFG) or regular expression:
+$<span class="arithmatex">\(P_{\text{constrained}}(y_t \mid y_{&lt;t}, x) = \begin{cases} \frac{\exp(z_t)}{\sum_{j \in \mathcal{V}_{\text{valid}}} \exp(z_j)}, &amp; \text{if } y_t \in \mathcal{V}_{\text{valid}}(y_{&lt;t}, \mathcal{G}) \\ 0, &amp; \text{otherwise} \end{cases}\)</span>$</p>
+<p>Where <span class="arithmatex">\(\mathcal{V}_{\text{valid}}(y_{&lt;t}, \mathcal{G})\)</span> is the set of valid next tokens allowed by the partial JSON/schema state machine <span class="arithmatex">\(\mathcal{G}\)</span>.</p>
+<h3 id="2-multi-turn-error-convergence">2. Multi-Turn Error Convergence</h3>
+<p>In the Self-Healing reflection loop, each subsequent attempt conditions on the previous error:
+$<span class="arithmatex">\(\mathcal{M}_{k+1} = \mathcal{M}_k \cup \{\text{Response}_k, \text{ErrorTrace}_k\}\)</span>$</p>
+<p>Empirical error decay exhibits exponential convergence: for schema errors caused by token omissions, the probability of failure decays as:
+$<span class="arithmatex">\(P(\text{Fail}_K) \approx P(\text{Error}_1) \cdot \alpha^{K-1}, \quad \text{where } \alpha \approx 0.15\)</span>$</p>
+<hr/>
+<h2 id="production-insights">🏭 Production Insights</h2>
+<div class="admonition success">
+<p class="admonition-title">🏭 Production Engineering: Guardrails &amp; Best Practices</p>
+<ul>
+<li><strong>Strict Extra Keys Forbiddance (<code>extra="forbid"</code>):</strong> In production APIs, always configure <code>extra="forbid"</code> on Pydantic models. Otherwise, models will hallucinate extraneous keys that degrade downstream database performance.</li>
+<li><strong>Limit Maximum Reflection Turns:</strong> Self-healing loops should be capped at <code>max_retries=3</code>. If an LLM cannot repair the JSON in 3 iterations, additional retries waste tokens and signal model inadequacy for that task.</li>
+<li><strong>Prefer Native Constrained Decoding Where Available:</strong> If the provider supports native JSON Schema enforcement (e.g. OpenAI Structured Outputs, vLLM Guided Decoding, Outlines), enable it to eliminate syntax errors at inference time with <span class="arithmatex">\(0\%\)</span> parsing overhead.</li>
+</ul>
+</div>
+<hr/>
+<h2 id="lab-06-empirical-results">📊 LAB-06: Empirical Results</h2>
+<p>Empirical benchmark across 500 financial contract extraction scenarios with adversarial format corruptions:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Extraction Strategy</th>
+<th style="text-align: center;">Success Rate (%)</th>
+<th style="text-align: center;">Avg. Attempts</th>
+<th style="text-align: center;">Syntax Errors</th>
+<th style="text-align: center;">Schema Errors</th>
+<th style="text-align: center;">Relative Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Raw JSON Prompting</strong></td>
+<td style="text-align: center;">68.4%</td>
+<td style="text-align: center;">1.00</td>
+<td style="text-align: center;">18.2%</td>
+<td style="text-align: center;">13.4%</td>
+<td style="text-align: center;"><span class="arithmatex">\(1.0\times\)</span> (Baseline)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>XML Delimited Tags</strong></td>
+<td style="text-align: center;">82.6%</td>
+<td style="text-align: center;">1.00</td>
+<td style="text-align: center;">4.8%</td>
+<td style="text-align: center;">12.6%</td>
+<td style="text-align: center;"><span class="arithmatex">\(1.05\times\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>JSON Schema Strict</strong></td>
+<td style="text-align: center;">89.2%</td>
+<td style="text-align: center;">1.00</td>
+<td style="text-align: center;">3.2%</td>
+<td style="text-align: center;">7.6%</td>
+<td style="text-align: center;"><span class="arithmatex">\(1.10\times\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Self-Healing Reflection (Max 3)</strong></td>
+<td style="text-align: center;"><strong>99.6%</strong></td>
+<td style="text-align: center;"><strong>1.14</strong></td>
+<td style="text-align: center;"><strong>0.2%</strong></td>
+<td style="text-align: center;"><strong>0.2%</strong></td>
+<td style="text-align: center;"><span class="arithmatex">\(1.18\times\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Instructor / Function Calling</strong></td>
+<td style="text-align: center;"><strong>99.8%</strong></td>
+<td style="text-align: center;"><strong>1.02</strong></td>
+<td style="text-align: center;"><strong>0.0%</strong></td>
+<td style="text-align: center;"><strong>0.2%</strong></td>
+<td style="text-align: center;"><span class="arithmatex">\(1.08\times\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<div class="admonition example">
+<p class="admonition-title">🚀 Interactive Playground</p>
+<p>We provide a Jupyter Playground prepared to run, experiment, and modify the structured output and self-healing extraction pipeline interactively, with full support for free execution on the cloud using Google Colab:</p>
+<p><a class="md-button md-button--primary" href="https://colab.research.google.com/github/RogerioLS/production-ai-systems/blob/main/docs/prompt_engineering/structured_outputs_playground.ipynb" target="_blank">Open in Colab</a>
+<a class="md-button" href="../structured_outputs_playground/">Open Local Notebook</a></p>
+</div>
+<hr/>
+<h2 id="try-it-yourself-experiments">🧪 Try It Yourself (Experiments)</h2>
+<ol>
+<li><strong>Adversarial Schema Stress Testing:</strong> In the interactive playground, introduce nested lists and complex decimal validations, and test how <code>RobustJSONParser</code> repairs malformed JSON strings.</li>
+<li><strong>Evaluate Reflection Traces:</strong> Inspect the exact dialogue generated by <code>build_repair_messages</code> when an invalid date or negative monetary amount is supplied.</li>
+<li><strong>Compare XML vs JSON Tokens:</strong> Measure token counts when extracting identical contractual structures using XML tags vs JSON keys.</li>
+</ol>
+<hr/>
+<h2 id="related-concepts">🧭 Related Concepts</h2>
+<ul>
+<li><strong>Production Financial Extractor (LAB-07):</strong> Corporate balance sheets, balance equity checks (<code>Assets == Liabilities + Equity</code>), and bank credit proposals.</li>
+<li><strong>Spec-Driven Development (LAB-08):</strong> Generating declarative Pydantic schemas and test suites automatically from <code>.spec.yaml</code> contracts.</li>
+<li><strong>LangGraph &amp; Autonomous Agents:</strong> Feeding validated typed states into agentic cyclic workflows.</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="Última atualização">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="30 de setembro de 2026 21:09:36 UTC"><span class="timeago" datetime="2026-09-30T21:09:36+00:00" locale="pt_BR"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="30 de setembro de 2026 21:09:36 UTC">2026-09-30</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="Criado em">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="30 de setembro de 2026 21:09:36 UTC"><span class="timeago" datetime="2026-09-30T21:09:36+00:00" locale="pt_BR"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="30 de setembro de 2026 21:09:36 UTC">2026-09-30</span>
+</span>
+</aside>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="Rodapé" class="md-footer__inner md-grid">
+<a aria-label="Anterior: LAB-05: Reasoning Patterns" class="md-footer__link md-footer__link--prev" href="../lab05/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Anterior
+              </span>
+<div class="md-ellipsis">
+                LAB-05: Reasoning Patterns
+              </div>
+</div>
+</a>
+<a aria-label="Próximo: 🧠 Prompt Reasoning Patterns Playground (LAB-05)" class="md-footer__link md-footer__link--next" href="../reasoning_playground/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Próximo
+              </span>
+<div class="md-ellipsis">
+                🧠 Prompt Reasoning Patterns Playground (LAB-05)
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.action.view", "content.action.edit", "navigation.footer"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script src="../../js/timeago.min.js"></script>
+<script src="../../js/timeago_mkdocs_material.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

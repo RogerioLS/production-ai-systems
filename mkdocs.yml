@@ -103,8 +103,10 @@ nav:
       - Overview: prompt_engineering/index.md
       - Learning:
           - "LAB-05: Reasoning Patterns": prompt_engineering/lab05.md
+          - "LAB-06: Structured Outputs": prompt_engineering/lab06.md
       - Interactive Playgrounds:
           - "Prompt Reasoning & Autonomous ReAct": prompt_engineering/reasoning_playground.ipynb
+          - "Structured Outputs & Self-Healing": prompt_engineering/structured_outputs_playground.ipynb
   - Architecture:
     - Overview: architecture/overview.md
     - ADRs:
